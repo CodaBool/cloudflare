@@ -1,0 +1,16 @@
+on:
+  push:
+    paths:
+      - analytics/**
+jobs:
+  release:
+    if: "! contains(github.event.commits[0].message, '[no ci]')"
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: cloudflare/wrangler-action@v3
+        working-directory: d3erver
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT }}
+          command: deploy

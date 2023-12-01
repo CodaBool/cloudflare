@@ -1,0 +1,21 @@
+name = "analytics"
+main = "main.js"
+compatibility_date = "2023-11-21"
+account_id = "711eb5718fbac6ce40d9482751fdfc64"
+node_compat = true
+workers_dev = true
+browser = { binding = "BROWSER" }
+
+[vars]
+DEBUG=true
+BATCH_SIZE=17 # max is 100
+MINIMUM=50 # do at least 17 a month
+DRY_RUN=true
+
+[triggers]
+crons = [ "*/20 * * * *" ]
+
+[[d1_databases]]
+binding = "D1"
+database_name = "foundry"
+database_id = "64163431-5f3e-4f6d-90e4-4a07d177374f"

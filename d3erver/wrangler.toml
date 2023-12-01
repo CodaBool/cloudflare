@@ -1,0 +1,20 @@
+name = "d3erver"
+main = "main.js"
+compatibility_date = "2023-11-21"
+logpush = true
+
+[vars]
+DOMAIN = "d3erver.codabool.workers.dev"
+
+[[kv_namespaces]]
+binding = "KV"
+id = "81ef062090584ece9c048283e16749f3"
+
+[[r2_buckets]]
+binding = "R2"
+bucket_name = "module"
+
+[[d1_databases]]
+binding = "D1"
+database_name = "foundry"
+database_id = "64163431-5f3e-4f6d-90e4-4a07d177374f"

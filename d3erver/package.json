@@ -1,0 +1,14 @@
+{
+  "name": "d3erver",
+  "type": "module",
+  "scripts": {
+    "deploy": "wrangler deploy",
+    "dev": "wrangler dev",
+    "start": "wrangler dev",
+    "remote": "wrangler dev --remote"
+  },
+  "devDependencies": {
+    "itty-router": "^4.0.23",
+    "wrangler": "^3.18.0"
+  }
+}
