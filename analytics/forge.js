@@ -3,7 +3,9 @@ import email from './util.js'
 
 export default async function forge(env) {
   const browser = await puppeteer.launch(env.BROWSER)
+
   const page = await browser.newPage()
+
   await page.goto("https://forge-vtt.com/account/login")
   await page.type('#__BVID__11', 'codabool')
   await page.type('#__BVID__13', env.FORGE_PASSWORD)

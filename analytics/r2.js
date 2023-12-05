@@ -91,7 +91,7 @@ export default async function r2Usage(env) {
   - write = ${bUsage}%
   - write operations = ${classBTotal}
   - storage = ${bytesUsage}%
-  - storage size = ${megabytes}Mb`
+  - storage size = ${megabytes.toFixed(1)}Mb`
 
   let severity = ""
   if (aUsage > 50 || bUsage > 50 || bytesUsage > 50) {

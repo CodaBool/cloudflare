@@ -5,6 +5,7 @@ account_id = "711eb5718fbac6ce40d9482751fdfc64"
 node_compat = true
 workers_dev = true
 browser = { binding = "BROWSER" }
+logpush = true
 
 [vars]
 DEBUG=true
@@ -13,7 +14,11 @@ MINIMUM=50 # do at least 17 a month
 DRY_RUN=true
 
 [triggers]
-crons = [ "*/20 * * * *" ]
+crons = ["* * * * *"]
+
+services = [
+  { binding = "worker", service = "analytics", environment = "production" }
+]
 
 [[d1_databases]]
 binding = "D1"

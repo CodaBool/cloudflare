@@ -1,0 +1,10 @@
+name = "cron"
+main = "main.js"
+compatibility_date = "2023-12-04"
+
+[triggers]
+crons = ["* * * * *"]
+
+services = [
+  { binding = "worker", service = "analytics", environment = "production" }
+]
