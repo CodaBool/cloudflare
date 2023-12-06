@@ -4,10 +4,10 @@
   "scripts": {
     "deploy": "wrangler deploy",
     "dev": "wrangler dev",
-    "start": "wrangler dev",
     "remote": "wrangler dev --remote",
     "test": "mocha",
-    "ci": "concurrently \"wrangler dev\" \"mocha\""
+    "wait-test": "wait-on http://localhost:8787 --delay 5000 && mocha",
+    "ci": "concurrently \"npm run dev\" \"npm run wait-test\""
   },
   "devDependencies": {
     "chai": "^4.3.10",
@@ -16,6 +16,7 @@
     "dotenv": "^16.3.1",
     "itty-router": "^4.0.23",
     "mocha": "^10.2.0",
+    "wait-on": "^7.2.0",
     "wrangler": "^3.18.0"
   }
 }
