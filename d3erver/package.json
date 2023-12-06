@@ -7,14 +7,12 @@
     "remote": "wrangler dev --remote",
     "test": "mocha",
     "wait-test": "wait-on http://localhost:8787 --delay 4000 && mocha",
-    "ci": "concurrently \"npm run dev\" \"npm run wait-test\"",
     "unix": "wrangler dev & npm run wait-test",
     "all": "npm-run-all --parallel dev wait-test"
   },
   "devDependencies": {
     "chai": "^4.3.10",
     "chai-http": "^4.4.0",
-    "concurrently": "^8.2.2",
     "dotenv": "^16.3.1",
     "itty-router": "^4.0.23",
     "mocha": "^10.2.0",
