@@ -23,8 +23,12 @@ jobs:
       - uses: actions/setup-node@v4
       - run: npm i
         working-directory: d3erver
-      - run: |
-          npx wrangler dev &
+      - name: test
+        run: |
+          npx wrangler dev \
+            --var FOUNDRY_SECRET:$FOUNDRY_SECRET \
+            --var FORGE_SECRET:$FORGE_SECRET \
+            --var TEST:$TEST &
           sleep 4s
           npx mocha
         env:

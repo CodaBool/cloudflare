@@ -1,12 +1,14 @@
 // import 'dotenv/config'
+
+
 import dotenv from 'dotenv'
 dotenv.config({ path: './.dev.vars' })
-import assert from 'assert'
+// import assert from 'assert'
 import chai from 'chai'
 import chaiHttp from 'chai-http'
 
 
-console.log("start", process.env)
+// console.log("start", process.env)
 // import { Miniflare } from "miniflare"
 
 // const mf = new Miniflare({
