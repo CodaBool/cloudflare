@@ -21,6 +21,17 @@ jobs:
           FOUNDRY_SECRET: ${{ secrets.FOUNDRY_SECRET }}
           FORGE_SECRET: ${{ secrets.FORGE_SECRET }}
         working-directory: d3erver
+
+      - uses: sambacha/parallelish@v1
+        with:
+          cmd1: npm run wait-test;
+          cmd2: npm run dev;
+        working-directory: d3erver
+        env:
+          DOMAIN: ${{ secrets.DOMAIN }}
+          TEST: ${{ secrets.TEST }}
+          FOUNDRY_SECRET: ${{ secrets.FOUNDRY_SECRET }}
+          FORGE_SECRET: ${{ secrets.FORGE_SECRET }}
       - run: "echo 'ran'"
       # - uses: cloudflare/wrangler-action@v3
       #   working-directory: d3erver
