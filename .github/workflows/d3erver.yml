@@ -21,15 +21,15 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-node@v4
-      # - run: npm ci
-      #   working-directory: d3erver
-      - run: npm run ci
-        env:
-          DOMAIN: ${{ secrets.DOMAIN }}
-          TEST: ${{ secrets.TEST }}
-          FOUNDRY_SECRET: ${{ secrets.FOUNDRY_SECRET }}
-          FORGE_SECRET: ${{ secrets.FORGE_SECRET }}
+      - run: npm ci
         working-directory: d3erver
+      # - run: npm run ci
+      #   env:
+      #     DOMAIN: ${{ secrets.DOMAIN }}
+      #     TEST: ${{ secrets.TEST }}
+      #     FOUNDRY_SECRET: ${{ secrets.FOUNDRY_SECRET }}
+      #     FORGE_SECRET: ${{ secrets.FORGE_SECRET }}
+      #   working-directory: d3erver
 
       - uses: sambacha/parallelish@v1.0.0
         with:
