@@ -4,25 +4,25 @@ dotenv.config({ path: './.dev.vars' })
 // import assert from 'assert'
 import chai from 'chai'
 import chaiHttp from 'chai-http'
-import { Miniflare } from "miniflare"
+// import { Miniflare } from "miniflare"
 
-const mf = new Miniflare({
-  modules: true,
-  script: "",
-  // script: `
-  // export default {
-  //   async fetch(request, env, ctx) {
-  //     const object = await env.R2.get("terminal-v1.0.0")
-  //     await env.R2.put("test", value.toString())
-  //     return new Response(value.toString())
-  //   }
-  // }
-  // `,
-  r2Buckets: ["R2"],
-})
+// const mf = new Miniflare({
+//   modules: true,
+//   script: "",
+//   // script: `
+//   // export default {
+//   //   async fetch(request, env, ctx) {
+//   //     const object = await env.R2.get("terminal-v1.0.0")
+//   //     await env.R2.put("test", value.toString())
+//   //     return new Response(value.toString())
+//   //   }
+//   // }
+//   // `,
+//   r2Buckets: ["R2"],
+// })
 
-const bucket = await mf.getR2Bucket("R2")
-await bucket.put("terminal-v1.0.0", "test")
+// const bucket = await mf.getR2Bucket("R2")
+// await bucket.put("terminal-v1.0.0", "test")
 
 
 const expect = chai.expect

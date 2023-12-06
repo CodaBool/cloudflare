@@ -1,10 +1,9 @@
-name: Tests
 on:
   push:
     branches:
       - main
-    # paths:
-    #   - "d3erver/**"
+    paths:
+      - "d3erver/**"
 jobs:
   release:
     if: "! contains(github.event.commits[0].message, '[no ci]')"
@@ -14,7 +13,7 @@ jobs:
       - uses: actions/setup-node@v4
       - run: npm ci
         working-directory: d3erver
-      - run: npm test
+      - run: npm run ci
         env:
           DOMAIN: ${{ secrets.DOMAIN }}
           TEST: ${{ secrets.TEST }}
