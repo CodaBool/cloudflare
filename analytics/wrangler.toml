@@ -14,6 +14,7 @@ MINIMUM=50 # do at least 17 a month
 DRY_RUN=true
 
 # using cron on home server since service bindings are broken
+
 # [triggers]
 # crons = ["*/20 * * * *"]
 

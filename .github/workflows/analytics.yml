@@ -15,5 +15,5 @@ jobs:
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT }}
-          workingDirectory: d3erver
+          workingDirectory: analytics
           command: deploy
