@@ -4,7 +4,7 @@ on:
     branches:
       - main
     paths:
-      - analytics
+      - "analytics/**"
 jobs:
   release:
     if: "! contains(github.event.commits[0].message, '[no ci]')"
