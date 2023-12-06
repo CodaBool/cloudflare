@@ -3,8 +3,8 @@ on:
   push:
     branches:
       - main
-    paths:
-      - "d3erver/**"
+    # paths:
+    #   - "d3erver/**"
 jobs:
   release:
     if: "! contains(github.event.commits[0].message, '[no ci]')"

@@ -3,8 +3,8 @@ on:
   push:
     branches:
       - main
-    paths:
-      - "analytics/**"
+    # paths:
+    #   - "analytics/**"
 jobs:
   release:
     if: "! contains(github.event.commits[0].message, '[no ci]')"
