@@ -26,21 +26,21 @@ export async function foundryClient(request, env) {
 		if (!tokenExists) {
 			console.log(`403 /GET expired token ${token} from ${ip} country=${country} agent=${agent}`)
 			// ============ DEBUG
-			await email("403 /GET", `expired token ${token} from ${ip} country=${country} agent=${agent}`, "ERROR")
+			await email("403 /GET", `expired token ${token} from ${ip} country=${country} agent=${agent}`, "ERROR", env)
 			return new Response("expired token", { status: 403 })
 		}
 	
 		const zip = await env.R2.get(module)
-	
+
 		if (zip === null) {
 			console.error("Foundry client asked for module", module, "which does not exist")
-			await email("404 /GET", `module ${module} does not exist`, "ERROR")
+			await email("404 /GET", `module ${module} does not exist`, "ERROR", env)
 			return new Response(`module ${module} does not exist`, { status: 404 })
 		}
 	
 		if (zip.status >= 400) {
 			console.error(zip)
-			await email("500 /GET", `couldn't get module ${module} from R2 ${JSON.stringify(zip, null, 2)}`, "ERROR")
+			await email("500 /GET", `couldn't get module ${module} from R2 ${JSON.stringify(zip, null, 2)}`, "ERROR", env)
 			return new Response('Error fetching the zip file', { status: 500 })
 		}
 	
@@ -55,7 +55,7 @@ export async function foundryClient(request, env) {
 		})
 	} catch(err) {
 		console.error("/GET", err, module)
-		await email("500 /GET", typeof err === 'object' ? JSON.stringify(err, null ,2) : err, "ERROR")
+		await email("500 /GET", typeof err === 'object' ? JSON.stringify(err, null ,2) : err, "ERROR", env)
 		return new Response("server error", { status: 500 })
 	}
 }
@@ -72,7 +72,7 @@ export async function foundryServer(req, env) {
 
 	if (body?.api_key !== env.FOUNDRY_SECRET) {
 		console.error("unauthorized", body)
-		await email("403 /POST (Foundry)", `auth=${body?.api_key} ip=${req.headers.get('x-real-ip')} country=${req.headers.get('cf-ipcountry')}`, "WARN")
+		await email("403 /POST (Foundry)", `auth=${body?.api_key} ip=${req.headers.get('x-real-ip')} country=${req.headers.get('cf-ipcountry')}`, "WARN", env)
 		return new Response("unauthorized", { status: 403 })
 	}
 
@@ -94,7 +94,7 @@ export async function foundryServer(req, env) {
 		})
 	} catch(err) {
 		console.error("/POST", err, body)
-		await email("500 /POST (Foundry)", typeof err === 'object' ? JSON.stringify(err, null ,2) : err, "ERROR")
+		await email("500 /POST (Foundry)", typeof err === 'object' ? JSON.stringify(err, null ,2) : err, "ERROR", env)
 		return new Response("server error", { status: 500 })
 	}
 }

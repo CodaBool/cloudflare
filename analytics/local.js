@@ -1,9 +1,13 @@
 import puppeteer from "puppeteer"
 import checkForge from './forge.js'
+import checkItch from './itch.js'
+import checkR2 from './r2.js'
 
-const browser = await puppeteer.launch({ headless: false })
-// await checkForge({ ...process.env, LOCAL: true }, browser)
+const env = { ...process.env, LOCAL: true }
 
+await checkR2(env)
 
-// await checkR2(env)
-// await checkItch(env, browser)
+let browser = await puppeteer.launch({ headless: false })
+await checkForge({ ...process.env, LOCAL: true }, browser)
+browser = await puppeteer.launch({ headless: false })
+await checkItch(env, browser)

@@ -1,6 +1,7 @@
 
 // increment CloudFlare D1, SQLite for record keeping
 export async function increment(env, platform, module) {
+	if (env.TEST === "true") return
 	try {
 		let date = new Date()
 		date = date.getFullYear() + "-" + (date.getMonth() + 1)
@@ -12,12 +13,13 @@ export async function increment(env, platform, module) {
 		}
 	} catch(err) {
 		console.error("D1", err)
-		await email("increment error", JSON.stringify(err, null, 2), "ERROR")
+		await email("increment error", JSON.stringify(err, null, 2), "ERROR", env)
 	}
 }
 
 // email myself
-export async function email(subject, value, name) {
+export async function email(subject, value, name, env) {
+	if (env.TEST === "true") return
 	const mail = await fetch("https://api.mailchannels.net/tx/v1/send", {
 		method: "POST",
 		headers: { "content-type": "application/json" },

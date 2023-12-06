@@ -24,7 +24,7 @@ export async function forgeDownload(request, env) {
 
 	if (secret !== env.FORGE_SECRET) {
 		console.error(`403 /forge wrong secret ${secret} from ${ip} country=${country}`)
-		await email("403 /forge", `wrong secret ${secret} from ${ip} country=${country}`, "ERROR")
+		await email("403 /forge", `wrong secret ${secret} from ${ip} country=${country}`, "ERROR", env)
 		return new Response("unauthorized", { status: 403 })
 	}
 
@@ -33,13 +33,13 @@ export async function forgeDownload(request, env) {
 	
 		if (zip === null) {
 			console.error("Forge server asked for module", module, "which does not exist")
-			await email("404 /forge", `module ${module} does not exist`, "ERROR")
+			await email("404 /forge", `module ${module} does not exist`, "ERROR", env)
 			return new Response(`module ${module} does not exist`, { status: 404 })
 		}
 	
 		if (zip.status >= 400) {
 			console.error(zip)
-			await email("500 /forge", `couldn't get module ${module} from R2 ${JSON.stringify(zip, null, 2)}`, "ERROR")
+			await email("500 /forge", `couldn't get module ${module} from R2 ${JSON.stringify(zip, null, 2)}`, "ERROR", env)
 			return new Response('Error fetching the zip file', { status: 500 })
 		}
 	
@@ -54,7 +54,7 @@ export async function forgeDownload(request, env) {
 		})
 	} catch(err) {
 		console.error("/forge", err, module)
-		await email("500 /forge", typeof err === 'object' ? JSON.stringify(err, null ,2) : err, "ERROR")
+		await email("500 /forge", typeof err === 'object' ? JSON.stringify(err, null ,2) : err, "ERROR", env)
 		return new Response("server error", { status: 500 })
 	}
 }
@@ -89,7 +89,7 @@ export async function forgeManifest(request, env) {
 
 	if (secret !== env.FORGE_SECRET) {
 		console.error(`403 /manifest wrong secret ${secret} from ${ip} country=${country}`)
-		await email("403 /manifest", `wrong secret ${secret} from ${ip} country=${country}`, "ERROR")
+		await email("403 /manifest", `wrong secret ${secret} from ${ip} country=${country}`, "ERROR", env)
 		return new Response("unauthorized", { status: 403 })
 	}
 
@@ -97,10 +97,10 @@ export async function forgeManifest(request, env) {
 		// D1 will have values updated from module Github Actions
 		const { data } = await env.D1.prepare("SELECT * FROM manifests").first()
 		const template = JSON.parse(data)
-	
+
 		// append manifest and download props with secrets
-		template.manifest = `https://d3erver.codabool.workers.dev/manifest?secret=${secret}&module=${moduleName}`
-		template.download = `https://d3erver.codabool.workers.dev/forge?secret=${env.FORGE_SECRET}&module=terminal-v${template.version}`
+		template.manifest = `https://${env.DOMAIN}/manifest?secret=${secret}&module=${moduleName}`
+		template.download = `https://${env.DOMAIN}/forge?secret=${env.FORGE_SECRET}&module=terminal-v${template.version}`
 	
 		const secretJSON = JSON.stringify(template, null, 2)
 	
@@ -111,7 +111,7 @@ export async function forgeManifest(request, env) {
 		})
 	} catch(err) {
 		console.error("/manifest", err)
-		await email("500 /manifest", typeof err === 'object' ? JSON.stringify(err, null ,2) : err, "ERROR")
+		await email("500 /manifest", typeof err === 'object' ? JSON.stringify(err, null ,2) : err, "ERROR", env)
 		return new Response("server error", { status: 500 })
 	}
 }

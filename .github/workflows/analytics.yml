@@ -1,21 +1,16 @@
-on:
-  push:
-    paths:
-      - d3server/**
-jobs:
-  release:
-    if: "! contains(github.event.commits[0].message, '[no ci]')"
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-node@v4
-      - run: npm ci
-        working-directory: d3erver
-      - run: npm test
-        working-directory: d3erver
-      - uses: cloudflare/wrangler-action@v3
-        working-directory: d3erver
-        with:
-          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
-          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT }}
-          command: deploy
+# on:
+#   push:
+#     paths:
+#       - analytics/**
+# jobs:
+#   release:
+#     if: "! contains(github.event.commits[0].message, '[no ci]')"
+#     runs-on: ubuntu-latest
+#     steps:
+#       - uses: actions/checkout@v3
+#       - uses: cloudflare/wrangler-action@v3
+#         working-directory: analytics
+#         with:
+#           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+#           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT }}
+#           command: deploy

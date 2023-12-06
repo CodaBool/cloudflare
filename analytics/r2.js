@@ -103,7 +103,7 @@ export default async function r2Usage(env) {
   } else if (env.DEBUG) {
     severity = "DEBUG"
   }
-  if (severity) {
+  if (severity && !env.LOCAL) {
     console.log("emailing with sev", severity)
     await email(subject, value, severity)
   }
