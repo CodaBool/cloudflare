@@ -9,19 +9,10 @@ jobs:
   release:
     if: "! contains(github.event.commits[0].message, '[no ci]')"
     runs-on: ubuntu-latest
-    # pipeline:
-    #   name: Node ${{ matrix.node-version }} on ${{ matrix.os }}
-    #   runs-on: ${{ matrix.os }}
-
-    #   strategy:
-    #     fail-fast: false
-    #     matrix:
-    #       node-version: ['20.x']
-    #       os: ['ubuntu-latest']
     steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-node@v4
-      - run: npm i
+      - run: npm ci
         working-directory: d3erver
       - name: test
         run: |
@@ -29,7 +20,7 @@ jobs:
             --var FOUNDRY_SECRET:$FOUNDRY_SECRET \
             --var FORGE_SECRET:$FORGE_SECRET \
             --var TEST:$TEST &
-          sleep 4s
+          sleep 5
           npx mocha
         env:
           DOMAIN: ${{ secrets.DOMAIN }}
@@ -37,10 +28,9 @@ jobs:
           FOUNDRY_SECRET: ${{ secrets.FOUNDRY_SECRET }}
           FORGE_SECRET: ${{ secrets.FORGE_SECRET }}
         working-directory: d3erver
-      - run: "echo 'ran'"
-      # - uses: cloudflare/wrangler-action@v3
-      #   working-directory: d3erver
-      #   with:
-      #     apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
-      #     accountId: ${{ secrets.CLOUDFLARE_ACCOUNT }}
-      #     command: deploy
+      - uses: cloudflare/wrangler-action@v3
+        working-directory: d3erver
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT }}
+          command: deploy

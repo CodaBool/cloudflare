@@ -1,44 +1,11 @@
-import dotenv from 'dotenv'
-dotenv.config({ path: './.dev.vars' })
 import chai from 'chai'
 import chaiHttp from 'chai-http'
+import dotenv from 'dotenv'
 
-
-// console.log("start", process.env)
-// import { Miniflare } from "miniflare"
-
-// const mf = new Miniflare({
-//   modules: true,
-//   script: "",
-//   // script: `
-//   // export default {
-//   //   async fetch(request, env, ctx) {
-//   //     const object = await env.R2.get("terminal-v1.0.0")
-//   //     await env.R2.put("test", value.toString())
-//   //     return new Response(value.toString())
-//   //   }
-//   // }
-//   // `,
-//   r2Buckets: ["R2"],
-// })
-
-// const bucket = await mf.getR2Bucket("R2")
-// await bucket.put("terminal-v1.0.0", "test")
-
-
-const expect = chai.expect
+dotenv.config({ path: './.dev.vars' })
 chai.use(chaiHttp)
 
-// describe('Array', function () {
-//   describe('#indexOf()', function () {
-//     it('should return -1 when the value is not present', async function () {
-//       assert.equal([1, 2, 3].indexOf(4), -1);
-//     })
-//   })
-// })
-
-// assert.equal([1, 2, 3].indexOf(4), -1)
-
+const expect = chai.expect
 const HOST = "http://localhost:8787"
 
 describe('d3erver', () => {
@@ -46,8 +13,7 @@ describe('d3erver', () => {
     chai.request(HOST)
       .get('/')
       .end((err, res) => {
-        expect(res).to.have.status(500)
-        // expect(res).to.have.status(400)
+        expect(res).to.have.status(400)
         done()
       })
   })
@@ -60,7 +26,6 @@ describe('d3erver', () => {
         done()
       })
   })
-
 
   let token
   let module
