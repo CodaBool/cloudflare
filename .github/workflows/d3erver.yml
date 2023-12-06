@@ -22,7 +22,7 @@ jobs:
           FORGE_SECRET: ${{ secrets.FORGE_SECRET }}
         working-directory: d3erver
 
-      - uses: sambacha/parallelish@v1
+      - uses: sambacha/parallelish@latest
         with:
           cmd1: cd d3erver && npm run wait-test;
           cmd2: cd d3erver && npm run dev;
