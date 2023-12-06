@@ -1,5 +1,8 @@
+name: analytics
 on:
   push:
+    branches:
+      - main
     paths:
       - analytics
 jobs:
