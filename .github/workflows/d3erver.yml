@@ -21,8 +21,8 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-node@v4
-      - run: npm ci
-        working-directory: d3erver
+      # - run: npm ci
+      #   working-directory: d3erver
       - run: npm run ci
         env:
           DOMAIN: ${{ secrets.DOMAIN }}
