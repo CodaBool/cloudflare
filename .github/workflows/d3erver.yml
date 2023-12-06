@@ -24,9 +24,8 @@ jobs:
 
       - uses: sambacha/parallelish@v1
         with:
-          cmd1: npm run wait-test;
-          cmd2: npm run dev;
-        working-directory: d3erver
+          cmd1: cd d3erver && npm run wait-test;
+          cmd2: cd d3erver && npm run dev;
         env:
           DOMAIN: ${{ secrets.DOMAIN }}
           TEST: ${{ secrets.TEST }}
