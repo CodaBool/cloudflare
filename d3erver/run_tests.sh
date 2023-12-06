@@ -1,6 +1,4 @@
 #!/bin/bash
-#wrangler dev &
-
-npm run wait-test &
-
-wrangler dev
+wrangler dev &
+sleep 3s
+npx mocha

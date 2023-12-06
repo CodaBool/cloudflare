@@ -21,25 +21,28 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-node@v4
-      - run: npm ci
+      - run: npm i
         working-directory: d3erver
-      # - run: npm run ci
-      #   env:
-      #     DOMAIN: ${{ secrets.DOMAIN }}
-      #     TEST: ${{ secrets.TEST }}
-      #     FOUNDRY_SECRET: ${{ secrets.FOUNDRY_SECRET }}
-      #     FORGE_SECRET: ${{ secrets.FORGE_SECRET }}
-      #   working-directory: d3erver
-
-      - uses: sambacha/parallelish@v1.0.0
-        with:
-          cmd1: cd d3erver && npm run wait-test;
-          cmd2: cd d3erver && npm run dev;
+      - run: |
+          npx wrangler dev &
+          sleep 4s
+          npx mocha
         env:
           DOMAIN: ${{ secrets.DOMAIN }}
           TEST: ${{ secrets.TEST }}
           FOUNDRY_SECRET: ${{ secrets.FOUNDRY_SECRET }}
           FORGE_SECRET: ${{ secrets.FORGE_SECRET }}
+        working-directory: d3erver
+
+      # - uses: sambacha/parallelish@v1.0.0
+      #   with:
+      #     cmd1: cd d3erver && npm run wait-test;
+      #     cmd2: cd d3erver && npm run dev;
+      #   env:
+      #     DOMAIN: ${{ secrets.DOMAIN }}
+      #     TEST: ${{ secrets.TEST }}
+      #     FOUNDRY_SECRET: ${{ secrets.FOUNDRY_SECRET }}
+      #     FORGE_SECRET: ${{ secrets.FORGE_SECRET }}
       - run: "echo 'ran'"
       # - uses: cloudflare/wrangler-action@v3
       #   working-directory: d3erver
