@@ -5,6 +5,11 @@ import checkR2 from './r2.js'
 
 export default {
   async fetch(request, env) {
+    const url = new URL(request.url)
+    const secret = url.searchParams.get("secret")
+    if (secret !== env.SECRET) {
+      return new Response('begone 🤖')
+    }
     const browser = await puppeteer.launch(env.BROWSER)
     const date = new Date()
     if (date.getHours() === 0 && date.getMinutes() < 15) {
@@ -17,7 +22,7 @@ export default {
     }
     return new Response('done')
   },
-  async scheduled(event, env, ctx) {
-    await env.worker.fetch(new Request('http://localhost'))
-  }
+  // async scheduled(event, env, ctx) {
+  //   await env.worker.fetch(new Request('http://localhost'))
+  // }
 }

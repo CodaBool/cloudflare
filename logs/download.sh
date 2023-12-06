@@ -10,7 +10,7 @@ ACCOUNT_ID=711eb5718fbac6ce40d9482751fdfc64
 BUCKET="logs"
 keys=$(aws s3api list-objects-v2 --bucket $BUCKET --endpoint-url https://$ACCOUNT_ID.r2.cloudflarestorage.com --query "Contents[].Key" --output text )
 
-filter=20231205 # year month, can be expanded or limited to the day
+filter=20231206 # year month, can be expanded or limited to the day
 
 mkdir -p junk
 

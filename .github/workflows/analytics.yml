@@ -10,11 +10,10 @@ jobs:
     if: "! contains(github.event.commits[0].message, '[no ci]')"
     runs-on: ubuntu-latest
     steps:
-      - run: "echo 'ran'"
-      # - uses: actions/checkout@v3
-      # - uses: cloudflare/wrangler-action@v3
-      #   working-directory: analytics
-      #   with:
-      #     apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
-      #     accountId: ${{ secrets.CLOUDFLARE_ACCOUNT }}
-      #     command: deploy
+      - uses: actions/checkout@v3
+      - uses: cloudflare/wrangler-action@v3
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT }}
+          workingDirectory: d3erver
+          command: deploy

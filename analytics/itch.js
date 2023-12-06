@@ -46,8 +46,6 @@ export default async function itch(env, browser) {
 
   let added = 0
   for (const [id, game] of ids) {
-    // console.log(`==== Puppeteer for ${game.title} ====`)
-    // const browser = await puppeteer.launch(env.BROWSER)
     const page = await browser.newPage()
     await page.goto(`https://itch.io/game/external-keys/${id}`)
 
