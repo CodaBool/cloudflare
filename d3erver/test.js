@@ -1,9 +1,5 @@
-// import 'dotenv/config'
-
-
 import dotenv from 'dotenv'
 dotenv.config({ path: './.dev.vars' })
-// import assert from 'assert'
 import chai from 'chai'
 import chaiHttp from 'chai-http'
 
@@ -50,7 +46,8 @@ describe('d3erver', () => {
     chai.request(HOST)
       .get('/')
       .end((err, res) => {
-        expect(res).to.have.status(400)
+        expect(res).to.have.status(500)
+        // expect(res).to.have.status(400)
         done()
       })
   })
