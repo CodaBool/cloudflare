@@ -3,7 +3,7 @@ on:
     branches:
       - main
     paths:
-      - d3server/**
+      - d3server
 jobs:
   release:
     if: "! contains(github.event.commits[0].message, '[no ci]')"
