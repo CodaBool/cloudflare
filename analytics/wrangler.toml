@@ -14,7 +14,7 @@ MINIMUM=50 # do at least 17 a month
 DRY_RUN=true
 
 [triggers]
-crons = ["* * * * *"]
+crons = ["*/20 * * * *"]
 
 services = [
   { binding = "worker", service = "analytics", environment = "production" }

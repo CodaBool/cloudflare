@@ -1,23 +1,23 @@
+import puppeteer from "@cloudflare/puppeteer"
 import checkItch from './itch.js'
 import checkForge from './forge.js'
 import checkR2 from './r2.js'
 
 export default {
-  async fetch(event, env, ctx) {
+  async fetch(request, env) {
+    const browser = await puppeteer.launch(env.BROWSER)
     const date = new Date()
     if (date.getHours() === 0 && date.getMinutes() < 15) {
       console.log("doing daily [R2 Usage, Itch Sales, Itch Keys]")
       await checkR2(env)
-      await checkItch(env)
+      await checkItch(env, browser)
     } else {
       console.log("doing frequent [forge sales]")
-      await checkForge(env)
+      await checkForge(env, browser)
     }
     return new Response('done')
   },
   async scheduled(event, env, ctx) {
-    // doesn't seem to be an easy way to await promise
-    const promise = env.worker.fetch(new Request('http://127.0.0.1'))
-    ctx.waitUntil(promise)
+    await env.worker.fetch(new Request('http://localhost'))
   }
 }

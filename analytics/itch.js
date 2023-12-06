@@ -1,4 +1,3 @@
-import puppeteer from "@cloudflare/puppeteer"
 import email from './util.js'
 
 const MODULES = {
@@ -27,7 +26,7 @@ async function generateKeys(env, package_name) {
   return body.keys
 }
 
-export default async function itch(env) {
+export default async function itch(env, browser) {
   console.log("checking Itch")
 
   // get games
@@ -48,7 +47,7 @@ export default async function itch(env) {
   let added = 0
   for (const [id, game] of ids) {
     // console.log(`==== Puppeteer for ${game.title} ====`)
-    const browser = await puppeteer.launch(env.BROWSER)
+    // const browser = await puppeteer.launch(env.BROWSER)
     const page = await browser.newPage()
     await page.goto(`https://itch.io/game/external-keys/${id}`)
 
