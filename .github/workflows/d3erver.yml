@@ -29,8 +29,8 @@ jobs:
           FORGE_SECRET: ${{ secrets.FORGE_SECRET }}
         working-directory: d3erver
       - uses: cloudflare/wrangler-action@v3
-        workingDirectory: d3erver
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT }}
+          workingDirectory: d3erver
           command: deploy
