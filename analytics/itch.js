@@ -2,6 +2,7 @@ import email from './util.js'
 
 const MODULES = {
   2331647: "terminal",
+  2413937: "maps-in-cyberspace",
 }
 
 async function generateKeys(env, package_name) {
@@ -46,6 +47,27 @@ export default async function itch(env, browser) {
 
   let added = 0
   for (const [id, game] of ids) {
+
+    // TODO: temporary skip on maps in cyberspace
+    // once fix is in for terminal, just do a check on if (game.can_be_bought)
+    if (id === 2413937) {
+      // update DB
+      if (env.LOCAL) {
+        await fetch(
+          `https://api.cloudflare.com/client/v4/accounts/711eb5718fbac6ce40d9482751fdfc64/d1/database/64163431-5f3e-4f6d-90e4-4a07d177374f/query`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${env.CF_TOKEN}`},
+          body: `{"params":[${game.views_count}, ${game.purchases_count}, "${MODULES[id]}"],"sql":"UPDATE sales SET views = ?, sold = ? WHERE module = ? AND platform = 'itch';"}`
+        })
+      } else {
+        const {meta} = await env.D1.prepare(`UPDATE sales SET views = ?, sold = ? WHERE module = ? AND platform = 'itch'`).bind(game.views_count, game.purchases_count, MODULES[id]).run()
+        console.log(`update D1 purchases table (${meta.rows_written }rows written )`)
+      }
+      console.log("skipping puppeteer action, it's a free module with no keys")
+      continue
+    }
     const page = await browser.newPage()
     await page.goto(`https://itch.io/game/external-keys/${id}`)
 
@@ -104,8 +126,6 @@ export default async function itch(env, browser) {
     await browser.close()
 
     // update DB
-    
-
     if (env.LOCAL) {
       await fetch(
         `https://api.cloudflare.com/client/v4/accounts/711eb5718fbac6ce40d9482751fdfc64/d1/database/64163431-5f3e-4f6d-90e4-4a07d177374f/query`, {
@@ -117,7 +137,7 @@ export default async function itch(env, browser) {
       })
     } else {
       const {meta} = await env.D1.prepare(`UPDATE sales SET keys = ?, views = ?, sold = ? WHERE module = ? AND platform = 'itch'`).bind(keys, game.views_count, game.purchases_count, MODULES[id]).run()
-      console.log("update D1 purchases table (", meta.rows_written, "rows written )")
+      console.log(`update D1 purchases table (${meta.rows_written }rows written )`)
     }
   
     console.log(`currently at ${keys} keys, verify at https://itch.io/game/external-keys/${id}/other for ${game.title}`)

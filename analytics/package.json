@@ -8,8 +8,8 @@
     "start": "node --env-file .dev.vars local.js"
   },
   "devDependencies": {
-    "puppeteer": "^21.5.2",
-    "wrangler": "^3.18.0"
+    "puppeteer": "^21.6.0",
+    "wrangler": "^3.19.0"
   },
   "dependencies": {
     "@cloudflare/puppeteer": "^0.0.5"

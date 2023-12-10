@@ -3,22 +3,9 @@ import email from './util.js'
 export default async function forge(env, browser) {
   const page = await browser.newPage()
   await page.goto("https://forge-vtt.com/account/login")
-  await page.waitForNavigation({ waitUntil: 'domcontentloaded' })
-  const inputElements = await page.evaluate(() => {
-    // Get all input elements on the page
-    const inputs = document.getElementsByTagName('input');
-
-    // Convert NodeList to Array and map to extract relevant information
-    return Array.from(inputs).map(input => ({
-      type: input.type,
-      name: input.name,
-      value: input.value
-    }));
-  })
-
-
-  console.log('Input Elements:', inputElements)
-
+  console.log("waiting for #__BVID__11")
+  await page.waitForSelector('#__BVID__11', { visible: true })
+  console.log("found #__BVID__11")
   await page.type('#__BVID__11', 'codabool')
   await page.type('#__BVID__13', env.FORGE_PASSWORD)
   await page.click('.btn-primary')
