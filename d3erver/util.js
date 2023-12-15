@@ -12,8 +12,8 @@ export async function increment(env, platform, module) {
 			await env.D1.prepare(`INSERT OR IGNORE INTO downloads (platform, module, total, year_month) VALUES ('${platform}', '${module}', 1, '${date}')`).run()
 		}
 	} catch(err) {
-		console.error("D1", err)
-		await email("increment error", JSON.stringify(err, null, 2), "ERROR", env)
+		console.error("D1", err, err?.message)
+		await email("increment error", err?.message, "ERROR", env)
 	}
 }
 
