@@ -115,3 +115,59 @@ export async function forgeManifest(request, env) {
 		return new Response("server error", { status: 500 })
 	}
 }
+
+/*         The Forge              */
+// downloads latest zip of the module
+export async function forgeLatest(request, env) {
+  const url = new URL(request.url)
+	const moduleName = url.searchParams.get("module")
+	const secret = url.searchParams.get("secret")
+
+	// debug
+	const country = request.headers.get('cf-ipcountry')
+	const agent = request.headers.get('user-agent')
+	const ip = request.headers.get('x-real-ip')
+
+	if (!secret || !moduleName) {
+		// ============ DEBUG
+		console.log(`url missing a query, likely a bot. ip=${ip} agent=${agent} country=${country}`)
+		return new Response('missing a query', { status: 400 })
+	}
+
+	if (secret !== env.FORGE_SECRET) {
+		console.error(`403 /manifest wrong secret ${secret} from ${ip} country=${country}`)
+		await email("403 /manifest", `wrong secret ${secret} from ${ip} country=${country}`, "ERROR", env)
+		return new Response("unauthorized", { status: 403 })
+	}
+
+	try {
+		// get latest version
+		const { data } = await env.D1.prepare("SELECT * FROM manifests").first()
+		const manifest = JSON.parse(data)
+
+		const zip = await env.R2.get(`${module}-v${manifest.version}`)
+	
+		if (zip === null) {
+			console.error("Forge server asked for module", module, "which does not exist")
+			await email("404 /latest", `module ${module} does not exist`, "ERROR", env)
+			return new Response(`module ${module} does not exist`, { status: 404 })
+		}
+	
+		if (zip.status >= 400) {
+			console.error(zip)
+			await email("500 /latest", `couldn't get module ${module} from R2 ${JSON.stringify(zip, null, 2)}`, "ERROR", env)
+			return new Response('Error fetching the zip file', { status: 500 })
+		}
+	
+		return new Response(zip.body, {
+			headers: {
+				'Content-Type': 'application/zip',
+				'Content-Disposition': `attachment; filename="${module}.zip"`,
+			}
+		})
+	} catch(err) {
+		console.error("/latest", err)
+		await email("500 /latest", typeof err === 'object' ? JSON.stringify(err, null ,2) : err, "ERROR", env)
+		return new Response("server error", { status: 500 })
+	}
+}
