@@ -120,7 +120,7 @@ export async function forgeManifest(request, env) {
 // downloads latest zip of the module
 export async function forgeLatest(request, env) {
   const url = new URL(request.url)
-	const moduleName = url.searchParams.get("module")
+	const module = url.searchParams.get("module")
 	const secret = url.searchParams.get("secret")
 
 	// debug
@@ -128,7 +128,7 @@ export async function forgeLatest(request, env) {
 	const agent = request.headers.get('user-agent')
 	const ip = request.headers.get('x-real-ip')
 
-	if (!secret || !moduleName) {
+	if (!secret || !module) {
 		// ============ DEBUG
 		console.log(`url missing a query, likely a bot. ip=${ip} agent=${agent} country=${country}`)
 		return new Response('missing a query', { status: 400 })
