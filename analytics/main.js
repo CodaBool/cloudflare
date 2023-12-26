@@ -17,7 +17,7 @@ export default {
       await checkR2(env)
       await checkItch(env, browser)
     } else {
-      console.log("doing frequent [forge sales]")
+      // console.log("doing frequent [forge sales]")
       await checkForge(env, browser)
     }
     return new Response('done')

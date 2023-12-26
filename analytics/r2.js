@@ -1,7 +1,7 @@
 import email from './util.js'
 
 export default async function r2Usage(env) {
-  console.log("checking R2")
+  // console.log("checking R2")
 
   const date = new Date()
   date.setDate(1) // set to first of the month
@@ -83,7 +83,7 @@ export default async function r2Usage(env) {
 
   let subject = `R2 read=${aUsage}% write=${bUsage}% storage=${bytesUsage}%`
 
-  console.log(subject)
+  // console.log(subject)
 
   let value = `Detailed Summary
   - read = ${aUsage}%
@@ -100,11 +100,11 @@ export default async function r2Usage(env) {
   } else if (new Date().getUTCDay() === 1) {
     // weekly Monday report
     severity = "Cozy"
-  } else if (env.DEBUG) {
-    severity = "DEBUG"
   }
+  //  else if (env.DEBUG) {
+  //   severity = "DEBUG"
+  // }
   if (severity && !env.LOCAL) {
-    console.log("emailing with sev", severity)
     await email(subject, value, severity)
   }
 }

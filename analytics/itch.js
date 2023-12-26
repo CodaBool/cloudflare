@@ -47,10 +47,7 @@ export default async function itch(env, browser) {
 
   let added = 0
   for (const [id, game] of ids) {
-
-    // TODO: temporary skip on maps in cyberspace
-    // once fix is in for terminal, just do a check on if (game.can_be_bought)
-    if (id === 2413937) {
+    if (game.min_price === 0) {
       // update DB
       if (env.LOCAL) {
         await fetch(
@@ -120,6 +117,7 @@ export default async function itch(env, browser) {
 
     if (keys < env.MINIMUM && env.DEBUG) {
       console.log("in debug mode skipping", env.BATCH_SIZE, "key insert")
+      await email(log, `${log} skipping adding ${env.BATCH_SIZE} since DEBUG is on. If you want to add keys. Go to https://foundryvtt.com/creators/generate-keys and enter the emailed keys at https://itch.io/game/external-keys/${id}/other`, "Low Keys")
     }
 
     // Close the browser
