@@ -107,6 +107,7 @@ export async function forgeManifest(request, env) {
 			// append manifest and download props with secrets
 			template.manifest = `https://${env.DOMAIN}/manifest?secret=${secret}&module=${moduleName}&beta=true`
 			template.download = `https://${env.DOMAIN}/forge?secret=${env.FORGE_SECRET}&module=terminal-v0.0.0`
+			template.version = "0.0.0"
 		}
 	
 		const secretJSON = JSON.stringify(template, null, 2)
