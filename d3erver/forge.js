@@ -72,6 +72,7 @@ export async function forgeManifest(request, env) {
   const url = new URL(request.url)
 	const moduleName = url.searchParams.get("module")
 	const secret = url.searchParams.get("secret")
+	const beta = url.searchParams.get("beta")
 
 	// debug
 	const country = request.headers.get('cf-ipcountry')
@@ -101,6 +102,12 @@ export async function forgeManifest(request, env) {
 		// append manifest and download props with secrets
 		template.manifest = `https://${env.DOMAIN}/manifest?secret=${secret}&module=${moduleName}`
 		template.download = `https://${env.DOMAIN}/forge?secret=${env.FORGE_SECRET}&module=terminal-v${template.version}`
+
+		if (beta) {
+			// append manifest and download props with secrets
+			template.manifest = `https://${env.DOMAIN}/manifest?secret=${secret}&module=${moduleName}&beta=true`
+			template.download = `https://${env.DOMAIN}/forge?secret=${env.FORGE_SECRET}&module=terminal-v0.0.0`
+		}
 	
 		const secretJSON = JSON.stringify(template, null, 2)
 	
