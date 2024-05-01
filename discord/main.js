@@ -1,5 +1,6 @@
 import { AutoRouter, json } from 'itty-router'
-import { verifyKey, InteractionType, InteractionResponseType, InteractionResponseFlags } from 'discord-interactions'
+import { verifyKey, InteractionType, InteractionResponseType } from 'discord-interactions'
+import { Client } from 'ssh2'
 import CMD from './commands.js'
 
 const router = AutoRouter()
@@ -14,29 +15,36 @@ router.post('/', async (request, env) => {
   }
   const body = JSON.parse(text)
 
-  // DEBUG
-  console.log("parsed", body)
-  console.log("InteractionType", InteractionType)
-  console.log("InteractionResponseType", InteractionResponseType)
-
   if (body.type === InteractionType.PING) {
     return json({ type: InteractionResponseType?.PONG }, { status: 200 })
   }
 
-  if (body.type === InteractionType.APPLICATION_COMMAND) {
-    console.log("this is a user command", body.data.name, "vs", CMD.ADD_TO_ALLOWLIST_COMMAND.name)
-    switch (body.data.name) {
-      case CMD.ADD_TO_ALLOWLIST_COMMAND.name: {
-        return json({ 
-          type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
-          data: { content: "content here" },
-        }, { status: 200 })
-      }
-      default: return json({ error: 'Unknown Type' }, { status: 400 })
-    }
+  if (body.type !== InteractionType.APPLICATION_COMMAND) {
+    return json({ error: 'rejecting non-command interaction' }, { status: 502 })
   }
 
-  return new Response("ok", { status: 200 })
+  if (body.data.name === CMD.ADD_TO_ALLOWLIST_COMMAND.name) {
+    
+    const value = body.data.options.find(o => o.name === "username").value
+
+    // likely needs to be wrapped in promise res rej, with an await
+    const conn = new Client()
+    conn.on('ready', () => {
+      console.log('Client :: ready');
+    }).connect({
+      host: env.SERVER_IP,
+      port: 22,
+      username: 'REPLACE',
+      password: env.SSH_PASSWORD
+    })
+
+    return json({
+      type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
+      data: { content: `you provided ${value}` },
+    }, { status: 200 })
+  }
+
+  return new Response("not found", { status: 404 })
 })
 
 

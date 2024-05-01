@@ -1,4 +1,4 @@
-import COMMANDS from './commands.js';
+import COMMANDS from './commands.js'
 import dotenv from 'dotenv'
 import process from 'node:process'
 
@@ -22,6 +22,8 @@ if (!process.env.APP_ID) {
  * you're sure these are the commands you want.
  */
 const url = `https://discord.com/api/v10/applications/${process.env.APP_ID}/commands`
+
+console.log("registering commands", Object.values(COMMANDS).map(cmd => cmd.name))
 
 const response = await fetch(url, {
   headers: {

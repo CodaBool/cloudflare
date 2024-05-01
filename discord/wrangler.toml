@@ -1,6 +1,8 @@
 name = "discord"
 main = "main.js"
-compatibility_date = "2023-10-30"
+compatibility_date = "2023-12-01"
+node_compat = true
+# compatibility_flags = [ "nodejs_compat" ]
 
 [vars]
 DOMAIN = "discord.codabool.workers.dev"
