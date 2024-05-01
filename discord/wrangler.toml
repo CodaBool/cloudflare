@@ -1,0 +1,7 @@
+name = "discord"
+main = "main.js"
+compatibility_date = "2023-10-30"
+
+[vars]
+DOMAIN = "discord.codabool.workers.dev"
+PUBLIC_KEY = "c2485dc3e3adccd7d92aa4836260aa5c2338f37a05c1690bbae7b2799da19333"

@@ -1,0 +1,24 @@
+{
+  "name": "discord",
+  "version": "1.0.0",
+  "main": "main.js",
+  "type": "module",
+  "scripts": {
+    "deploy": "wrangler deploy",
+    "dev": "wrangler dev",
+    "register": "node register.js",
+    "remote": "wrangler dev --remote"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "buffer": "^6.0.3",
+    "discord-interactions": "^3.4.0",
+    "dotenv": "^16.4.5",
+    "itty-router": "^5.0.17",
+    "tweetnacl": "^1.0.3",
+    "wrangler": "^3.53.0"
+  }
+}
