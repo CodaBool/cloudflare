@@ -98,7 +98,7 @@ export async function forgeManifest(request, env) {
 	try {
 		// D1 will have values updated from module Github Actions
 		const { data } = await env.D1.prepare("SELECT * FROM manifests").first()
-		const template = JSON.parse(data)
+		let template = JSON.parse(data)
 
 		// append manifest and download props with secrets
 		template.manifest = `https://${env.DOMAIN}/manifest?secret=${secret}&module=${moduleName}`
