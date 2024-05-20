@@ -118,7 +118,7 @@ export async function forgeManifest(request, env) {
 				"system": `${url.searchParams.get("system")}`,
 				"joinTheme": "default",
 				"coreVersion": `${url.searchParams.get("core")}`,
-				"download": `https://d3erver.codabool.workers.dev/manifest?secret=${env.FORGE_SECRET}&module=terminal&beta=true&world=true`,
+				"download": `https://d3erver.codabool.workers.dev/manifest?secret=${env.FORGE_SECRET}&module=terminal&beta=true&world=true&system=${url.searchParams.get("system")}&version=${url.searchParams.get("version")}&core=${url.searchParams.get("core")}`,
 				"compatibility": {
 					"minimum": "10",
 					"verified": "11"
