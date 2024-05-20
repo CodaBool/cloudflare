@@ -73,6 +73,7 @@ export async function forgeManifest(request, env) {
 	const moduleName = url.searchParams.get("module")
 	const secret = url.searchParams.get("secret")
 	const beta = url.searchParams.get("beta")
+	const world = url.searchParams.get("world")
 
 	// debug
 	const country = request.headers.get('cf-ipcountry')
@@ -108,6 +109,24 @@ export async function forgeManifest(request, env) {
 			template.manifest = `https://${env.DOMAIN}/manifest?secret=${secret}&module=${moduleName}&beta=true`
 			template.download = `https://${env.DOMAIN}/forge?secret=${env.FORGE_SECRET}&module=terminal-v0.0.0`
 			template.version = "0.0.0"
+		}
+		if (world) {
+			// used for exported forge worlds from my personal account
+			template = JSON.parse(JSON.stringify({
+				"title": "exported",
+				"id": "exported",
+				"system": `${url.searchParams.get("system")}`,
+				"joinTheme": "default",
+				"coreVersion": `${url.searchParams.get("core")}`,
+				"download": `https://d3erver.codabool.workers.dev/manifest?secret=${env.FORGE_SECRET}&module=terminal&beta=true&world=true`,
+				"compatibility": {
+					"minimum": "10",
+					"verified": "11"
+				},
+				"systemVersion": `${url.searchParams.get("version")}`,
+				"lastPlayed": "Mon May 20 2024 03:13:54 GMT+0000 (Coordinated Universal Time)",
+				"playtime": 90
+			}))
 		}
 	
 		const secretJSON = JSON.stringify(template, null, 2)
