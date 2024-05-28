@@ -8,11 +8,11 @@
     "test": "mocha"
   },
   "devDependencies": {
-    "chai": "^4.3.10",
+    "chai": "^5.1.1",
     "chai-http": "^4.4.0",
-    "dotenv": "^16.3.1",
-    "itty-router": "^4.0.23",
-    "mocha": "^10.2.0",
-    "wrangler": "^3.19.0"
+    "dotenv": "^16.4.5",
+    "itty-router": "^5.0.17",
+    "mocha": "^10.4.0",
+    "wrangler": "^3.57.1"
   }
 }

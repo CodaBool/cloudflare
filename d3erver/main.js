@@ -1,18 +1,21 @@
-import { Router } from 'itty-router'
+// import { Router } from 'itty-router'
+import { AutoRouter, json } from 'itty-router'
+
 import { foundryClient, foundryServer } from './foundry.js'
 import { forgeManifest, forgeDownload, forgeLatest } from './forge.js'
 import { emailMe } from './other.js'
 
+const router = AutoRouter()
 
-const router = Router()
 router.get("/", foundryClient)
-router.post("/", foundryServer)
-router.get("/forge", forgeDownload)
-router.get("/latest", forgeLatest)
-router.get("/manifest", forgeManifest)
-router.post("/email", emailMe)
-router.all('*', () => new Response('Not Found.', { status: 404 }))
+	.post("/", foundryServer)
+	.get("/forge", forgeDownload)
+	.get("/latest", forgeLatest)
+	.get("/manifest", forgeManifest)
+	.post("/email", emailMe)
 
+
+// for local testing
 let ranInit = false
 async function init(env) {
 	// D1
@@ -27,6 +30,6 @@ async function init(env) {
 export default {
 	async fetch(request, env) {
 		if (!ranInit && env.TEST === "true") await init(env)
-		return router.handle(request, env)
+		return router.fetch(request, env)
 	}
 }

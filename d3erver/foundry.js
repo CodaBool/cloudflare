@@ -24,9 +24,9 @@ export async function foundryClient(request, env) {
 		const tokenExists = await env.KV.get(token)
 	
 		if (!tokenExists) {
-			console.log(`403 /GET expired token ${token} from ${ip} country=${country} agent=${agent}`)
+			console.log(`403 /GET expired token ${token} from ${ip} country=${country} agent=${agent}. These are often false alarms, they seem to happen if the module is installed too quickly`)
 			// ============ DEBUG
-			await email("403 /GET", `expired token ${token} from ${ip} country=${country} agent=${agent}`, "ERROR", env)
+			await email("403 /GET", `expired token ${token} from ${ip} country=${country} agent=${agent}. These are often false alarms, they seem to happen if the module is installed too quickly`, "ERROR", env)
 			return new Response("expired token", { status: 403 })
 		}
 	

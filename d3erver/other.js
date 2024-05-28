@@ -16,13 +16,13 @@ export async function emailMe(request, env) {
     // console.log(`country=${country} agent=${agent} ip=${ip} origin=${origin}`)
 
     if (!version || !module || !active || !text) {
-        console.log(`url missing a query, likely a bot. ip=${ip} agent=${agent} country=${country} origin=${origin} body=${text}`)
+        // console.log(`url missing a query, likely a bot. ip=${ip} agent=${agent} country=${country} origin=${origin} body=${text}`)
         return new Response('missing a query', { status: 400 })
     }
 
     try {
         const activePretty = active.replaceAll(";", " ")
-        await email(`${module} feedback`, `country=${country} agent=${agent} ip=${ip} origin=${origin}\n\nActive modules: ${activePretty}\nFoundry Version: ${version}\n\nSystem: ${system}\n\n${text}`, "Feedback", env)
+        await email(`${module} feedback`, `country=${country} agent=${agent} ip=${ip} origin=${origin}\n\nActive modules: ${activePretty}\nFoundry Version: ${version}\nSystem: ${system}\n\n${text}`, "Feedback", env)
         return new Response('email sent', { status: 200 })
     } catch(err) {
         console.error("/email", err, module, version, active)

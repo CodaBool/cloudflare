@@ -1,16 +1,15 @@
-import chai from 'chai'
+import * as chai from 'chai'
 import chaiHttp from 'chai-http'
 import dotenv from 'dotenv'
 
 dotenv.config({ path: './.dev.vars' })
-chai.use(chaiHttp)
+const { expect, request } = chai.use(chaiHttp)
 
-const expect = chai.expect
 const HOST = "http://localhost:8787"
 
 describe('d3erver', () => {
   it('/GET 400 on mising query', done => {
-    chai.request(HOST)
+    request(HOST)
       .get('/')
       .end((err, res) => {
         expect(res).to.have.status(400)
@@ -18,7 +17,7 @@ describe('d3erver', () => {
       })
   })
   it('/GET 403 on bad token', done => {
-    chai.request(HOST)
+    request(HOST)
       .get('/')
       .query({ token: "test", module: "test" })
       .end((err, res) => {
@@ -31,7 +30,7 @@ describe('d3erver', () => {
   let module
 
   it('/POST 200 Foundryvtt.com', done => {
-    chai.request(HOST)
+    request(HOST)
       .post('/')
       .send({ api_key: process.env.FOUNDRY_SECRET, package_name: 'terminal', user_id: "test", version: "1.0.0" })
       .end((err, res) => {
@@ -44,7 +43,7 @@ describe('d3erver', () => {
   });
 
   it('/GET 404 authed but non-existant module', done => {
-    chai.request(HOST)
+    request(HOST)
       .get('/')
       .query({ token, module: "test" })
       .end((err, res) => {
@@ -54,7 +53,7 @@ describe('d3erver', () => {
   })
 
   it('/GET 200 client uses the download URL', done => {
-    chai.request(HOST)
+    request(HOST)
       .get('/')
       .query({ token, module })
       .end((err, res) => {
@@ -66,7 +65,7 @@ describe('d3erver', () => {
 
   // FORGE
   it('/forge 400 missing query', done => {
-    chai.request(HOST)
+    request(HOST)
       .get('/forge')
       .end((err, res) => {
         expect(res).to.have.status(400)
@@ -74,7 +73,7 @@ describe('d3erver', () => {
       })
   })
   it('/forge 403 bad secret', done => {
-    chai.request(HOST)
+    request(HOST)
       .get('/forge')
       .query({ secret: "test", module: "test" })
       .end((err, res) => {
@@ -83,7 +82,7 @@ describe('d3erver', () => {
       })
   })
   it('/forge 404 bad module', done => {
-    chai.request(HOST)
+    request(HOST)
       .get('/forge')
       .query({ secret: process.env.FORGE_SECRET, module: "test" })
       .end((err, res) => {
@@ -95,7 +94,7 @@ describe('d3erver', () => {
 
   // MANIFEST
   it('/manifest 400 missing queries', done => {
-    chai.request(HOST)
+    request(HOST)
       .get('/manifest')
       .end((err, res) => {
         expect(res).to.have.status(400)
@@ -103,7 +102,7 @@ describe('d3erver', () => {
       })
   })
   it('/manifest 403 bad secret', done => {
-    chai.request(HOST)
+    request(HOST)
       .get('/manifest')
       .query({ secret: "test", module: "test" })
       .end((err, res) => {
@@ -112,7 +111,7 @@ describe('d3erver', () => {
       })
   })
   it('/manifest 200 secret injected module.json', done => {
-    chai.request(HOST)
+    request(HOST)
       .get('/manifest')
       .query({ secret: process.env.FORGE_SECRET, module: "terminal" })
       .end((err, res) => {

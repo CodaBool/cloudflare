@@ -38,5 +38,5 @@ export async function email(subject, value, name, env) {
 		console.error(`Error sending email: ${mail.status} ${mail.statusText} ${text}`)
 		return
 	}
-	console.log("email =", mail.statusText)
+	// console.log("email =", mail.statusText)
 }

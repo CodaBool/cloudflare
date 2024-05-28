@@ -17,7 +17,7 @@ export async function forgeDownload(request, env) {
 
 	if (!secret || !module) {
 		// ============ DEBUG
-		console.log(`url missing a query, likely a bot. ip=${ip} agent=${agent} country=${country} secret=${secret} module=${module}`)
+		// console.log(`url missing a query, likely a bot. ip=${ip} agent=${agent} country=${country} secret=${secret} module=${module}`)
 		// await email("400 /forge", `url missing a query ${url} req ${JSON.stringify(request, null, 2)}`, "DEBUG")
 		return new Response('missing a query', { status: 400 })
 	}
@@ -84,7 +84,7 @@ export async function forgeManifest(request, env) {
 
 	if (!secret || !moduleName) {
 		// ============ DEBUG
-		console.log(`url missing a query, likely a bot. ip=${ip} agent=${agent} country=${country}`)
+		// console.log(`url missing a query, likely a bot. ip=${ip} agent=${agent} country=${country}`)
 		return new Response('missing a query', { status: 400 })
 	}
 
@@ -138,7 +138,7 @@ export async function forgeLatest(request, env) {
 
 	if (!secret || !module) {
 		// ============ DEBUG
-		console.log(`url missing a query, likely a bot. ip=${ip} agent=${agent} country=${country}`)
+		// console.log(`url missing a query, likely a bot. ip=${ip} agent=${agent} country=${country}`)
 		return new Response('missing a query', { status: 400 })
 	}
 
