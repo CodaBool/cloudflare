@@ -73,6 +73,7 @@ export async function forgeManifest(request, env) {
 	const moduleName = url.searchParams.get("module")
 	const secret = url.searchParams.get("secret")
 	const beta = url.searchParams.get("beta")
+	const forge = url.searchParams.get("forge")
 
 	// debug
 	const country = request.headers.get('cf-ipcountry')
@@ -108,6 +109,11 @@ export async function forgeManifest(request, env) {
 			template.manifest = `https://${env.DOMAIN}/manifest?secret=${secret}&module=${moduleName}&beta=true`
 			template.download = `https://${env.DOMAIN}/forge?secret=${env.FORGE_SECRET}&module=terminal-v0.0.0`
 			template.version = "0.0.0"
+			if (forge) {
+				template.manifest = `https://${env.DOMAIN}/manifest?secret=${secret}&module=${moduleName}&beta=true&forge=true`
+				template.title = "codabool-terminal-test"
+				template.id = "codabool-terminal-test"
+			}
 		}
 	
 		const secretJSON = JSON.stringify(template, null, 2)
