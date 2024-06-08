@@ -110,8 +110,8 @@ export async function forgeManifest(request, env) {
 			template.download = `https://${env.DOMAIN}/forge?secret=${env.FORGE_SECRET}&module=terminal-v0.0.0`
 			template.version = "0.0.0"
 			if (forge) {
-				template.version = "3.0.0"
-				template.manifest = `https://${env.DOMAIN}/manifest?secret=${secret}&module=${moduleName}&beta=true&forge=true`
+				template.version = forge
+				template.manifest = `https://${env.DOMAIN}/manifest?secret=${secret}&module=${moduleName}&beta=true&forge=${forge}`
 				template.title = "codabool-terminal-test"
 				template.id = "codabool-terminal-test"
 			}
