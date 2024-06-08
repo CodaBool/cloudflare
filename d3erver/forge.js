@@ -97,10 +97,15 @@ export async function forgeManifest(request, env) {
 
 	try {
 		// D1 will have values updated from module Github Actions
-		const { data } = await env.D1.prepare("SELECT * FROM manifests").first()
-		const template = JSON.parse(data)
-
+		let res
+		if (forge) {
+			res = await env.D1.prepare("SELECT * FROM manifests WHERE module='codabool-terminal-test'").first()
+		} else {
+			res = await env.D1.prepare("SELECT * FROM manifests WHERE module='terminal'").first()
+		}
+    
 		// append manifest and download props with secrets
+		const template = JSON.parse(res.data)
 		template.manifest = `https://${env.DOMAIN}/manifest?secret=${secret}&module=${moduleName}`
 		template.download = `https://${env.DOMAIN}/forge?secret=${env.FORGE_SECRET}&module=terminal-v${template.version}`
 
@@ -111,7 +116,7 @@ export async function forgeManifest(request, env) {
 			template.version = "0.0.0"
 			if (forge) {
 				template.version = forge
-				template.manifest = `https://${env.DOMAIN}/manifest?secret=${secret}&module=${moduleName}&beta=true&forge=${forge}`
+				template.manifest = `https://${env.DOMAIN}/manifest?secret=${secret}&module=${moduleName}&beta=true&forge=true`
 				template.title = "codabool-terminal-test"
 				template.id = "codabool-terminal-test"
 			}
@@ -157,7 +162,7 @@ export async function forgeLatest(request, env) {
 
 	try {
 		// get latest version
-		const { data } = await env.D1.prepare("SELECT * FROM manifests").first()
+		const { data } = await env.D1.prepare("SELECT * FROM manifests WHERE module='terminal'").first()
 		const manifest = JSON.parse(data)
 
 		const zip = await env.R2.get(`${module}-v${manifest.version}`)
