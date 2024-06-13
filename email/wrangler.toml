@@ -1,0 +1,3 @@
+name = "email"
+main = "main.js"
+compatibility_date = "2023-10-30"

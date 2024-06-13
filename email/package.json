@@ -1,0 +1,13 @@
+{
+  "name": "email",
+  "type": "module",
+  "scripts": {
+    "deploy": "wrangler deploy",
+    "dev": "wrangler dev",
+    "remote": "wrangler dev --remote"
+  },
+  "devDependencies": {
+    "itty-router": "^5.0.17",
+    "wrangler": "^3.60.2"
+  }
+}
