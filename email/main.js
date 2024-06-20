@@ -4,18 +4,25 @@ const router = AutoRouter()
 
 router.post('/', async (request, env) => {
   const url = new URL(request.url)
-	const subject = url.searchParams.get("subject")
-	const value = url.searchParams.get("body") // this will be the body of the email. You can include \n for new lines
+	let subject = url.searchParams.get("subject")
 	const email = url.searchParams.get("to")  // recipient email
 	const name = url.searchParams.get("name")  // recipient name
 	const from = url.searchParams.get("from")  // senders name
 	const secret = url.searchParams.get("secret")  // used for auth
+  const body = await request.json()
+  let value = url.searchParams.get("body")
 
   if (secret !== env.SECRET) {
 		return new Response('unauthorized', { status: 403 })
-	} else if (!from || !name || !email || !value || !subject) {
+	} else if (!from || !name || !email) {
 		return new Response('missing query', { status: 400 })
 	}
+
+  // self host uptime kuma
+  if (body["monitor"]) {
+    value = body["monitor"] + " is down"
+    subject = body["monitor"] + " is down"
+  }
 
   const mail = await fetch("https://api.mailchannels.net/tx/v1/send", {
     method: "POST",
