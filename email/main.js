@@ -19,7 +19,7 @@ router.post('/', async (request, env) => {
     return new Response("missing query", { status: 400 });
   }
   let body, value;
-  
+
   if (contentType === "application/json") {
     try {
       body = await request.json()
@@ -31,10 +31,13 @@ router.post('/', async (request, env) => {
   }
 
 
+  // TODO: rework this, this is just a mess
   if (typeof body === "object") {
     if (body['monitor']) {
       value = body["monitor"] + " is down";
       subject = body["monitor"] + " is down";
+    } else {
+      value = body
     }
   } else if (simpleBody) {
     value = simpleBody
@@ -44,20 +47,22 @@ router.post('/', async (request, env) => {
 
   const mail = await fetch("https://api.mailchannels.net/tx/v1/send", {
     method: "POST",
-    headers: { "content-type": "application/json" },
+    headers: {
+      "content-type": "application/json",
+      "x-api-key": env.API_KEY,
+    },
     body: JSON.stringify({
       personalizations: [{
         to: [{ email, name }]
       }],
       from: {
         email: `mail@codabool.com`,
-        name: from
+        name: from,
       },
       content: [{ type: format, value }],
-      subject
+      subject,
     })
-  });
-  console.log(mail);
+  })
   const text = await mail.text();
   if (!mail.ok || mail.status > 399) {
     console.error(`Error sending email: ${mail.status} ${mail.statusText} ${text}`);

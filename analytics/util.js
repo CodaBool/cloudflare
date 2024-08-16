@@ -1,7 +1,10 @@
 export default async function email(subject, value, name) {
 	const mail = await fetch("https://api.mailchannels.net/tx/v1/send", {
 		method: "POST",
-		headers: { "content-type": "application/json" },
+		headers: {
+			"content-type": "application/json",
+			"x-api-key": env.API_KEY,
+		},
 		body: JSON.stringify({
 			personalizations: [{
 				to: [{ email: "codabool@pm.me", name: "CodaBool" }],
