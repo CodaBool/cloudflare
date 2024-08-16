@@ -32,14 +32,14 @@ export default async function itch(env, browser) {
 
   // get games
   const myGames = await fetch("https://itch.io/api/1/key/my-games", {
-    headers: {'Authorization': `Bearer ${env.ITCH_TOKEN}`}
+    headers: { 'Authorization': `Bearer ${env.ITCH_TOKEN}` }
   })
   const myGamesData = await myGames.json()
   const ids = new Map()
-	if (myGamesData.errors) {
-		console.error(myGamesData.errors[0])
+  if (myGamesData.errors) {
+    console.error(myGamesData.errors[0])
     return
-	}
+  }
   myGamesData.games.forEach(game => {
     console.log(`${game.title} purchased ${game.purchases_count} times with ${game.views_count} views`)
     ids.set(game.id, game)
@@ -55,12 +55,13 @@ export default async function itch(env, browser) {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
-            'Authorization': `Bearer ${env.CF_TOKEN}`},
+            'Authorization': `Bearer ${env.CF_TOKEN}`
+          },
           body: `{"params":[${game.views_count}, ${game.purchases_count}, "${MODULES[id]}"],"sql":"UPDATE sales SET views = ?, sold = ? WHERE module = ? AND platform = 'itch';"}`
         })
       } else {
-        const {meta} = await env.D1.prepare(`UPDATE sales SET views = ?, sold = ? WHERE module = ? AND platform = 'itch'`).bind(game.views_count, game.purchases_count, MODULES[id]).run()
-        console.log(`update D1 purchases table (${meta.rows_written }rows written )`)
+        const { meta } = await env.D1.prepare(`UPDATE sales SET views = ?, sold = ? WHERE module = ? AND platform = 'itch'`).bind(game.views_count, game.purchases_count, MODULES[id]).run()
+        console.log(`update D1 purchases table (${meta.rows_written}rows written )`)
       }
       console.log("skipping puppeteer action, it's a free module with no keys")
       continue
@@ -96,19 +97,19 @@ export default async function itch(env, browser) {
         console.error("failed to generate foundry keys for", game.title)
         return
       }
-      
+
       // insert keys
       await page.select('select[name="keys[type]"]', 'other')
-  
+
       const textarea = await page.$('textarea')
       let keyText = ""
       generated.forEach(text => {
         keyText += text + "\n"
       })
       await textarea.type(keyText)
-    
+
       const btns = await page.$$('button')
-      await btns[btns.length -1].click()
+      await btns[btns.length - 1].click()
       await page.waitForNavigation({ waitUntil: 'networkidle0' })
 
       keys += env.BATCH_SIZE
@@ -117,7 +118,7 @@ export default async function itch(env, browser) {
 
     if (keys < env.MINIMUM && env.DEBUG) {
       console.log("in debug mode skipping", env.BATCH_SIZE, "key insert")
-      await email(log, `${log} skipping adding ${env.BATCH_SIZE} since DEBUG is on. If you want to add keys. Go to https://foundryvtt.com/creators/generate-keys and enter the emailed keys at https://itch.io/game/external-keys/${id}/other`, "Low Keys")
+      await email(log, `${log} skipping adding ${env.BATCH_SIZE} since DEBUG is on. If you want to add keys. Go to https://foundryvtt.com/creators/generate-keys (optimal generation is 17 keys/month) and enter the emailed keys at https://itch.io/game/external-keys/${id}/other`, "Low Keys")
     }
 
     // Close the browser
@@ -130,14 +131,15 @@ export default async function itch(env, browser) {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${env.CF_TOKEN}`},
+          'Authorization': `Bearer ${env.CF_TOKEN}`
+        },
         body: `{"params":[${keys}, ${game.views_count}, ${game.purchases_count}, "${MODULES[id]}"],"sql":"UPDATE sales SET keys = ?, views = ?, sold = ? WHERE module = ? AND platform = 'itch';"}`
       })
     } else {
-      const {meta} = await env.D1.prepare(`UPDATE sales SET keys = ?, views = ?, sold = ? WHERE module = ? AND platform = 'itch'`).bind(keys, game.views_count, game.purchases_count, MODULES[id]).run()
-      console.log(`update D1 purchases table (${meta.rows_written }rows written )`)
+      const { meta } = await env.D1.prepare(`UPDATE sales SET keys = ?, views = ?, sold = ? WHERE module = ? AND platform = 'itch'`).bind(keys, game.views_count, game.purchases_count, MODULES[id]).run()
+      console.log(`update D1 purchases table (${meta.rows_written}rows written )`)
     }
-  
+
     console.log(`currently at ${keys} keys, verify at https://itch.io/game/external-keys/${id}/other for ${game.title}`)
   }
 

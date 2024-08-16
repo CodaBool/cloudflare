@@ -12,6 +12,7 @@
     "wrangler": "^3.19.0"
   },
   "dependencies": {
-    "@cloudflare/puppeteer": "^0.0.5"
+    "@cloudflare/puppeteer": "^0.0.5",
+    "graphql-request": "^7.1.0"
   }
 }

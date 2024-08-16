@@ -3,9 +3,7 @@ import email from './util.js'
 export default async function forge(env, browser) {
   const page = await browser.newPage()
   await page.goto("https://forge-vtt.com/account/login")
-  //console.log("waiting for #__BVID__11")
   await page.waitForSelector('#__BVID__11', { visible: true })
-  //console.log("found #__BVID__11")
   await page.type('#__BVID__11', 'codabool')
   await page.type('#__BVID__13', env.FORGE_PASSWORD)
   await page.click('.btn-primary')
@@ -40,7 +38,8 @@ export default async function forge(env, browser) {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${env.CF_TOKEN}`},
+          'Authorization': `Bearer ${env.CF_TOKEN}`
+        },
         body: `{"params":["${name}"],"sql":"SELECT sold FROM sales WHERE platform = 'forge' AND module = ?;"}`
       })
       const res = await raw.json()
@@ -49,7 +48,7 @@ export default async function forge(env, browser) {
       const res = await env.D1.prepare(`SELECT sold FROM sales WHERE platform = 'forge' AND module = ?`).bind(name).first()
       sold = res.sold
     }
-    //console.log("sales", sales, "sold", sold)
+    console.log("sales", sales, "sold", sold)
     if (sold !== sales) {
 
 
@@ -59,7 +58,8 @@ export default async function forge(env, browser) {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
-            'Authorization': `Bearer ${env.CF_TOKEN}`},
+            'Authorization': `Bearer ${env.CF_TOKEN}`
+          },
           body: `{"params":[${sales}, "${name}"],"sql":"UPDATE sales SET sold = ? WHERE platform = 'forge' AND module = ?;"}`
         })
         newSales += (sales - sold)
@@ -74,12 +74,12 @@ export default async function forge(env, browser) {
       }
     }
   }
-  //console.log("new sales", newSales)
+  // console.log("new sales", newSales)
   let msg = "no new sales"
   if (newSales && !env.LOCAL) {
     msg = `${newSales} new Forge sales have been made!`
     await email(msg, msg, "Sold")
   } else {
-    //console.log(msg, `$${Math.floor(data.balance)} total Forge revenue`)
+    console.log(msg, `$${Math.floor(data.balance)} total Forge revenue`)
   }
 }

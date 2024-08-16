@@ -11,15 +11,19 @@ export default {
       return new Response('begone 🤖')
     }
     const browser = await puppeteer.launch(env.BROWSER)
-    const date = new Date()
-    if (date.getHours() === 0 && date.getMinutes() < 15) {
-      console.log("doing daily [R2 Usage, Itch Sales, Itch Keys]")
-      await checkR2(env)
-      await checkItch(env, browser)
-    } else {
-      // console.log("doing frequent [forge sales]")
-      await checkForge(env, browser)
-    }
+
+    // only do key checking now
+    await checkItch(env, browser)
+
+    // const date = new Date()
+    // if (date.getHours() === 0 && date.getMinutes() < 15) {
+    //   console.log("doing daily [Itch Sales, Itch Keys]")
+    //   // await checkR2(env)
+    //   await checkItch(env, browser)
+    // } else {
+    //   // console.log("doing frequent [forge sales]")
+    //   // await checkForge(env, browser)
+    // }
     return new Response('done')
   },
   // async scheduled(event, env, ctx) {

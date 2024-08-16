@@ -1,3 +1,5 @@
+// DEPRECATED
+import { gql, GraphQLClient } from 'graphql-request'
 import email from './util.js'
 
 export default async function r2Usage(env) {
@@ -5,39 +7,110 @@ export default async function r2Usage(env) {
 
   const date = new Date()
   date.setDate(1) // set to first of the month
-    
-  const res = await fetch('https://api.cloudflare.com/client/v4/graphql', {
+
+
+  const client = new GraphQLClient('https://api.cloudflare.com/client/v4/graphql', {
     method: 'POST',
     headers: {
+      authorization: `Authorization: Bearer ${env.CLOUDFLARE_API_TOKEN}`,
       'X-AUTH-EMAIL': "codabool@pm.me",
-      'X-AUTH-KEY': env.CLOUDFLARE_API_TOKEN,
+      // 'X-AUTH-KEY': env.CLOUDFLARE_API_TOKEN,
       'Content-Type': 'application/json',
     },
-    body: JSON.stringify({
-      query: `{
-        viewer {
-          accounts(filter: { accountTag: "711eb5718fbac6ce40d9482751fdfc64" }) {
-            r2OperationsAdaptiveGroups(
-              filter: { datetime_geq: "${date.toISOString()}" }
-              limit: 9999
-            ) {
-              dimensions {
-                actionType
-              }
-              sum {
-                requests
-              }
-            }
-          }
-        }
-      }`
-    })
   })
-  
+
+  const query = gql`
+    query {
+      r2OperationsAdaptiveGroups {
+        id
+        name
+      }
+    }
+  `;
+
+  // const query = gql`
+  //   {
+  //     viewer {
+  //       accounts(filter: { accountTag: "711eb5718fbac6ce40d9482751fdfc64" }) {
+  //         r2OperationsAdaptiveGroups(
+  //           filter: { datetime_geq: "${date.toISOString()}" }
+  //           limit: 9999
+  //         ) {
+  //           dimensions {
+  //             actionType
+  //           }
+  //           sum {
+  //             requests
+  //           }
+  //         }
+  //       }
+  //     }
+  //   }
+  // `
+  const res = await client.request(query)
+  // await request('https://api.cloudflare.com/client/v4/graphql', document)
+
+  // const res = await fetch('https://api.cloudflare.com/client/v4/graphql', {
+  //   headers: {
+  //     "Authorization": `Authorization: Bearer ${env.CLOUDFLARE_API_TOKEN}`,
+  //     'X-AUTH-EMAIL': "codabool@pm.me",
+  //     'X-AUTH-KEY': env.CLOUDFLARE_API_TOKEN,
+  //     'Content-Type': 'application/json',
+  //   },
+  //   method: 'POST',
+  //   body: JSON.stringify({
+  //     query: `{
+  //       viewer {
+  //         accounts(filter: { accountTag: "711eb5718fbac6ce40d9482751fdfc64" }) {
+  //           r2OperationsAdaptiveGroups(
+  //             filter: { datetime_geq: "${date.toISOString()}" }
+  //             limit: 9999
+  //           ) {
+  //             dimensions {
+  //               actionType
+  //             }
+  //             sum {
+  //               requests
+  //             }
+  //           }
+  //         }
+  //       }
+  //     }`
+  //   })
+  // })
+  // const res = await fetch('https://api.cloudflare.com/client/v4/graphql', {
+  //   method: 'POST',
+  //   headers: {
+  //     'X-AUTH-EMAIL': "codabool@pm.me",
+  //     'X-AUTH-KEY': env.CLOUDFLARE_API_TOKEN,
+  //     'Content-Type': 'application/json',
+  //   },
+  //   body: JSON.stringify({
+  //     query: `{
+  //       viewer {
+  //         accounts(filter: { accountTag: "711eb5718fbac6ce40d9482751fdfc64" }) {
+  //           r2OperationsAdaptiveGroups(
+  //             filter: { datetime_geq: "${date.toISOString()}" }
+  //             limit: 9999
+  //           ) {
+  //             dimensions {
+  //               actionType
+  //             }
+  //             sum {
+  //               requests
+  //             }
+  //           }
+  //         }
+  //       }
+  //     }`
+  //   })
+  // })
+
   const body = await res.json()
   const classA = ["ListBuckets", "PutBucket", "ListObjects", "PutObject", "CopyObject", "CompleteMultipartUpload", "CreateMultipartUpload", "ListMultipartUploads", "UploadPart", "UploadPartCopy", "ListParts", "PutBucketEncryption", "PutBucketCors", "PutBucketLifecycleConfiguration"]
   const classB = ["HeadBucket", "HeadObject", "GetObject", "UsageSummary", "GetBucketEncryption", "GetBucketLocation", "GetBucketCors", "GetBucketLifecycleConfiguration"]
   let [classATotal, classBTotal] = [0, 0]
+  console.log("view", body)
   body.data.viewer.accounts[0].r2OperationsAdaptiveGroups.forEach(item => {
     if (classA.includes(item.dimensions.actionType)) {
       classATotal += item.sum.requests
@@ -45,10 +118,10 @@ export default async function r2Usage(env) {
       classBTotal += item.sum.requests
     }
   })
-  
+
   const aUsage = Math.round((classATotal / 1_000_000) * 100)
   const bUsage = Math.round((classBTotal / 10_000_000) * 100)
-  
+
   const storage = await fetch('https://api.cloudflare.com/client/v4/graphql', {
     method: 'POST',
     headers: {
@@ -73,8 +146,8 @@ export default async function r2Usage(env) {
       }`
     })
   })
-  
-  
+
+
   const bodyStorage = await storage.json()
   const bytes = bodyStorage.data.viewer.accounts[0].r2StorageAdaptiveGroups[0].max.payloadSize
   const gigabytes = bytes / 1e9
