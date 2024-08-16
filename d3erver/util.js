@@ -22,7 +22,10 @@ export async function email(subject, value, name, env) {
 	if (env.TEST === "true") return
 	const mail = await fetch("https://api.mailchannels.net/tx/v1/send", {
 		method: "POST",
-		headers: { "content-type": "application/json" },
+		headers: {
+			"content-type": "application/json",
+			"x-api-key": env.MAILCHANNEL_API_KEY,
+		},
 		body: JSON.stringify({
 			personalizations: [{
 				to: [{ email: "codabool@pm.me", name: "CodaBool" }],

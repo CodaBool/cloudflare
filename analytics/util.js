@@ -3,7 +3,7 @@ export default async function email(subject, value, name) {
 		method: "POST",
 		headers: {
 			"content-type": "application/json",
-			"x-api-key": env.API_KEY,
+			"x-api-key": env.MAILCHANNEL_API_KEY,
 		},
 		body: JSON.stringify({
 			personalizations: [{
