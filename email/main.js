@@ -33,7 +33,7 @@ router.post('/', async (request, env) => {
 
   // TODO: rework this, this is just a mess
   if (typeof body === "object") {
-    if (body['monitor']) {
+    if (body["uptime"]) {
       value = body["monitor"] + " is down";
       subject = body["monitor"] + " is down";
     } else {
