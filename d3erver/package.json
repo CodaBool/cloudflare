@@ -9,10 +9,10 @@
   },
   "devDependencies": {
     "chai": "^5.1.1",
-    "chai-http": "^4.4.0",
+    "chai-http": "^5.1.1",
     "dotenv": "^16.4.5",
-    "itty-router": "^5.0.17",
-    "mocha": "^10.4.0",
-    "wrangler": "^3.57.1"
+    "itty-router": "^5.0.18",
+    "mocha": "^10.7.3",
+    "wrangler": "3.80.3"
   }
 }

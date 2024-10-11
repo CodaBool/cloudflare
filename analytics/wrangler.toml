@@ -1,17 +1,19 @@
+# DOCS = https://developers.cloudflare.com/workers/wrangler/configuration
 name = "analytics"
 main = "main.js"
-compatibility_date = "2023-10-30"
-account_id = "711eb5718fbac6ce40d9482751fdfc64"
-node_compat = true
-workers_dev = true
+# there is a newer compatibility date of "2024-09-23" but it breaks pupeteer
+compatibility_date = "2024-06-02"
+compatibility_flags = ["nodejs_compat"]
 browser = { binding = "BROWSER" }
-logpush = true
 
 [vars]
 DEBUG = true
 BATCH_SIZE = 17 # max is 100
 MINIMUM = 70    # do at least 17 a month
 DRY_RUN = true
+
+[observability]
+enabled = true
 
 # using cron on home server since service bindings are broken
 

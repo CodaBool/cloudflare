@@ -7,7 +7,7 @@ export default {
   async fetch(request, env) {
     const url = new URL(request.url)
     const secret = url.searchParams.get("secret")
-    if (secret !== env.SECRET) {
+    if (secret !== env.FOUNDRY_SECRET) {
       return new Response('begone 🤖')
     }
     const browser = await puppeteer.launch(env.BROWSER)
