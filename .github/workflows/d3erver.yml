@@ -10,7 +10,9 @@ jobs:
     if: "! contains(github.event.commits[0].message, '[no ci]')"
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      # https://github.com/marketplace/actions/checkout
+      - uses: actions/checkout@v4
+      # https://github.com/marketplace/actions/setup-node-js-environment
       - uses: actions/setup-node@v4
       - run: npm ci
         working-directory: d3erver
@@ -28,6 +30,7 @@ jobs:
           FOUNDRY_SECRET: ${{ secrets.FOUNDRY_SECRET }}
           FORGE_SECRET: ${{ secrets.FORGE_SECRET }}
         working-directory: d3erver
+      # https://github.com/marketplace/actions/deploy-to-cloudflare-workers-with-wrangler
       - uses: cloudflare/wrangler-action@v3
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
