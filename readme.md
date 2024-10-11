@@ -10,3 +10,6 @@
 # Scripts
 ## logs
 > downloads all Worker logs for a specified day
+
+### NO LONGER NEEDED
+cloudflare actually give you log history now without the fuss YIPEE
