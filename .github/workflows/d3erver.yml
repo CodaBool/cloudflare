@@ -23,7 +23,7 @@ jobs:
             --var FORGE_SECRET:$FORGE_SECRET \
             --var TEST:$TEST &
           sleep 5
-          npx mocha
+          npm run test
         env:
           DOMAIN: ${{ secrets.DOMAIN }}
           TEST: ${{ secrets.TEST }}

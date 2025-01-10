@@ -6,11 +6,12 @@ import dotenv from 'dotenv'
 
 dotenv.config({ path: './.dev.vars' })
 
-// local server, requires starting a dev server with 'bun run dev'
-// const HOST = "http://localhost:8787"
+// local server, requires starting a dev server with 'npm run dev'
+// also make sure to change TEST=false in wrangler.toml otherwise you get emails
+const HOST = "http://localhost:8787"
 
 // can also test on the live server
-const HOST = "https://d3erver.codabool.workers.dev"
+// const HOST = "https://d3erver.codabool.workers.dev"
 
 describe('d3erver', () => {
   it('/GET 400 on mising query', done => {

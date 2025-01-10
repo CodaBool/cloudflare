@@ -1,0 +1,16 @@
+{
+  "name": "caffine",
+  "version": "1.0.0",
+  "main": "main.js",
+  "type": "module",
+  "scripts": {
+    "deploy": "wrangler deploy",
+    "dev": "wrangler dev",
+    "register": "node register.js",
+    "remote": "wrangler dev --remote"
+  },
+  "dependencies": {
+    "itty-router": "^5.0.18",
+    "wrangler": "^3.99.0"
+  }
+}
