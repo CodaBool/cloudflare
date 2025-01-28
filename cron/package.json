@@ -1,0 +1,13 @@
+{
+  "name": "cron",
+  "type": "module",
+  "scripts": {
+    "deploy": "wrangler deploy",
+    "dev": "wrangler dev",
+    "start": "wrangler dev",
+    "local": "node --env-file .dev.vars local.js"
+  },
+  "devDependencies": {
+    "wrangler": "^3.106.0"
+  }
+}
