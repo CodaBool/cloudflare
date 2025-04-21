@@ -112,7 +112,7 @@ export async function forgeManifest(request, env) {
 		if (beta) {
 			// append manifest and download props with secrets
 			template.manifest = `https://${env.DOMAIN}/manifest?secret=${secret}&module=${moduleName}&beta=true`
-			template.download = `https://${env.DOMAIN}/forge?secret=${env.FORGE_SECRET}&module=terminal-v0.0.0`
+			template.download = `https://${env.DOMAIN}/forge?secret=${env.FORGE_SECRET}&module=${moduleName}-v0.0.0`
 			console.log("template version", template.version)
 			if (forge) {
 				template.manifest = `https://${env.DOMAIN}/manifest?secret=${secret}&module=${moduleName}&beta=true&forge=true`

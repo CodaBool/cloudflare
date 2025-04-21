@@ -1,0 +1,6 @@
+# DOCS = https://developers.cloudflare.com/workers/wrangler/configuration
+name = "screenshot"
+main = "main.js"
+compatibility_date = "2025-03-20"
+browser = { binding = "BROWSER" }
+compatibility_flags = ["nodejs_compat_v2"]
