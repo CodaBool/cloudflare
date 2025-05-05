@@ -8,6 +8,6 @@
     "local": "node --env-file .dev.vars local.js"
   },
   "devDependencies": {
-    "wrangler": "^3.106.0"
+    "wrangler": "^4.14.1"
   }
 }

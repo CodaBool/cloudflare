@@ -1,13 +1,21 @@
 export default {
   async scheduled(event, env, ctx) {
 
-    const currentDate = new Date(); // Get the current date and time
-    const dayOfMonth = currentDate.getDate(); // Get the day of the month
-  
-    if (dayOfMonth > 7) {
-      // Exit early if the day of the month is greater than 7
-      console.log("Not the first week of the month. Exiting...")
-      return new Response('wrong day of month')
+    const now = new Date();
+
+    // Convert to America/New_York local time using Intl
+    const options = { timeZone: "America/New_York", hour: "numeric", weekday: "short" };
+    const { resolvedOptions } = new Intl.DateTimeFormat("en-US", options);
+    const parts = new Intl.DateTimeFormat("en-US", options).formatToParts(now);
+
+    const weekday = parts.find(p => p.type === "weekday").value; // e.g., "Sun"
+    const hour = parseInt(parts.find(p => p.type === "hour").value); // e.g., 2 for 2PM
+
+    const dayOfMonth = now.getDate();
+
+    if (weekday !== "Sun" || hour !== 2 || dayOfMonth > 7) {
+      console.log("Not the correct time or not first Sunday");
+      return new Response('skipped');
     }
 
     // Base URL
