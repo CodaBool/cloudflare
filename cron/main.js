@@ -29,10 +29,8 @@ async function shared(event, env, ctx) {
   // Base URL
   const baseUrl = "https://deckytasjx2gzief7bp4isnnwq0yugmu.lambda-url.us-east-1.on.aws"
   const randomIndex = Math.floor(Math.random() * GIF_URLS.length)
-  const gif = GIF_URLS[randomIndex]
-
-  console.log("gif =", gif)
-  return new Response('exit early')
+  const gif = "https://github.com/CodaBool/cloudflare/blob/main/cron/img/hq_3-4x.gif?raw=true"
+  // const gif = GIF_URLS[randomIndex]
 
   // Query parameters
   const queryParams = {
