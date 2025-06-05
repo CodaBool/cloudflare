@@ -5,9 +5,9 @@
     "deploy": "wrangler deploy",
     "dev": "wrangler dev",
     "start": "wrangler dev",
-    "local": "node --env-file .dev.vars local.js"
+    "placeholder": "node --env-file .dev.vars main.js"
   },
   "devDependencies": {
-    "wrangler": "^3.106.0"
+    "wrangler": "^4.19.1"
   }
 }

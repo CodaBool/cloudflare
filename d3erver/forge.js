@@ -74,7 +74,7 @@ export async function forgeManifest(request, env) {
 	const secret = url.searchParams.get("secret")
 	const beta = url.searchParams.get("beta")
 	const forge = url.searchParams.get("forge")
-
+  const possibleModules = ["terminal", "map"]
 	// debug
 	const country = request.headers.get('cf-ipcountry')
 	const agent = request.headers.get('user-agent')
@@ -98,11 +98,17 @@ export async function forgeManifest(request, env) {
 	try {
 		// D1 will have values updated from module Github Actions
 		let res
-		if (forge) {
-			res = await env.D1.prepare("SELECT * FROM manifests WHERE module='codabool-terminal-test'").first()
-		} else {
-			res = await env.D1.prepare("SELECT * FROM manifests WHERE module='terminal'").first()
-		}
+    if (forge) {
+      res = await env.D1.prepare("SELECT * FROM manifests WHERE module='codabool-terminal-test'").first();
+    } else {
+      if (possibleModules.includes(moduleName)) {
+        res = await env.D1.prepare(`SELECT * FROM manifests WHERE module='${moduleName}'`).first();
+      } else {
+        console.error(`400 /manifest possible inject attempt ${moduleName} from ${ip} country=${country}`);
+        await email("400 /manifest", `400 /manifest possible inject attempt ${moduleName} from ${ip} country=${country}`, "ERROR", env);
+        return new Response("bad module", { status: 400 });
+      }
+    }
     
 		// append manifest and download props with secrets
 		const template = JSON.parse(res.data)
