@@ -1,3 +1,5 @@
+import {GIF_URLS} from "./gif_urls.js"
+
 export default {
   async scheduled(event, env, ctx) {
     return await shared(event, env, ctx)
@@ -21,15 +23,20 @@ async function shared(event, env, ctx) {
 
   if (weekday !== "Sat" || hour !== 1 || dayOfMonth > 7 || dayPeriod !== "PM") {
     console.log("Not the correct time or not first Saturday");
-    return new Response('skipped');
+    if (event !== "test") return new Response('skipped');
   }
 
   // Base URL
   const baseUrl = "https://deckytasjx2gzief7bp4isnnwq0yugmu.lambda-url.us-east-1.on.aws"
+  const randomIndex = Math.floor(Math.random() * GIF_URLS.length)
+  const gif = GIF_URLS[randomIndex]
+
+  console.log("gif =", gif)
+  return new Response('exit early')
 
   // Query parameters
   const queryParams = {
-    body: "@everyone Your Pilot License Level increased at the end of last session. I'll be joining the voice channel in an hour to assist anyone with level ups. This is very optional, and feel free to work async for your level ups.",
+    body: `@everyone Your Pilot License Level increased at the end of last session! I'll be joining the voice channel in an hour to assist anyone with level ups. This is optional! Feel free to work async on level ups[.](${gif})`,
     secret: env.SECRET,
     test: event === "test",
     action: "manual",
@@ -69,3 +76,4 @@ async function shared(event, env, ctx) {
   }
   return new Response('email sent' + `${event === "test" ? " (test)" : ""}`)
 }
+
