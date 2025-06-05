@@ -29,8 +29,9 @@ async function shared(event, env, ctx) {
   // Base URL
   const baseUrl = "https://deckytasjx2gzief7bp4isnnwq0yugmu.lambda-url.us-east-1.on.aws"
   const randomIndex = Math.floor(Math.random() * GIF_URLS.length)
-  const gif = "https://github.com/CodaBool/cloudflare/blob/main/cron/img/hq_3-4x.gif?raw=true"
-  // const gif = GIF_URLS[randomIndex]
+  // linking to a gif in this way does keep the size somewhat small
+  // I dthink there are Discord APIs to get something larger, but this is fine for now
+  const gif = GIF_URLS[randomIndex]
 
   // Query parameters
   const queryParams = {

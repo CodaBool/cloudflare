@@ -18,6 +18,6 @@ export const GIF_URLS = [
  "https://github.com/CodaBool/cloudflare/blob/main/cron/img/sq_8.gif?raw=true",
  "https://github.com/CodaBool/cloudflare/blob/main/cron/img/sq_11.gif?raw=true",
  "https://github.com/CodaBool/cloudflare/blob/main/cron/img/sq_13.gif?raw=true",
- "https://github.com/CodaBool/cloudflare/blob/main/cron/img/sq_14.gif?raw=true",
+ "https://github.com/CodaBool/cloudflare/blob/main/cron/img/sq_14.webp?raw=true",
  "https://github.com/CodaBool/cloudflare/blob/main/cron/img/sq_15.gif?raw=true",
 ]
