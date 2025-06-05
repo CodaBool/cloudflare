@@ -9,13 +9,19 @@ export default {
 }
 
 async function shared(event, env, ctx) {
-  const currentDate = new Date(); // Get the current date and time
-  const dayOfMonth = currentDate.getDate(); // Get the day of the month
+  const now = new Date();
 
-  if (dayOfMonth > 7) {
-    // Exit early if the day of the month is greater than 7
-    console.log("Not the first week of the month. Exiting...")
-    return new Response('wrong day of month')
+  // Convert to America/New_York local time using Intl
+  const options = { timeZone: "America/New_York", hour: "numeric", weekday: "short" };
+  const parts = new Intl.DateTimeFormat("en-US", options).formatToParts(now);
+  const weekday = parts.find(p => p.type === "weekday").value; // e.g., "Sun"
+  const hour = parseInt(parts.find(p => p.type === "hour").value); // e.g., 1
+  const dayPeriod = parts.find(p => p.type === "dayPeriod").value // e.g., PM / AM
+  const dayOfMonth = now.getDate();
+
+  if (weekday !== "Sat" || hour !== 1 || dayOfMonth > 7 || dayPeriod !== "PM") {
+    console.log("Not the correct time or not first Saturday");
+    return new Response('skipped');
   }
 
   // Base URL
