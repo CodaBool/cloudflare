@@ -6,8 +6,7 @@ export default {
   },
   // for local tests
   async fetch(event, env, ctx) {
-    const secret = url.searchParams.get("secret")
-    if (env.SECRET !== secret) {
+    if (env.SECRET !== url.searchParams.get("secret")) {
       return new Response('begone bot 🤖')
     }
     return await shared("test", env, ctx)
