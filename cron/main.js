@@ -1,4 +1,4 @@
-import {GIF_URLS} from "./gif_urls.js"
+import { GIF_URLS } from "./gif_urls.js"
 
 export default {
   async scheduled(event, env, ctx) {
@@ -6,6 +6,10 @@ export default {
   },
   // for local tests
   async fetch(event, env, ctx) {
+    const secret = url.searchParams.get("secret")
+    if (env.SECRET !== secret) {
+      return new Response('begone bot 🤖')
+    }
     return await shared("test", env, ctx)
   }
 }
@@ -75,4 +79,3 @@ async function shared(event, env, ctx) {
   }
   return new Response('email sent' + `${event === "test" ? " (test)" : ""}`)
 }
-
