@@ -45,6 +45,8 @@ router.post('/', async (request, env) => {
     value = body
   }
 
+  // console.log("sending mail", email, name, from, format, subject)
+
   const mail = await fetch("https://api.mailchannels.net/tx/v1/send", {
     method: "POST",
     headers: {
@@ -63,7 +65,9 @@ router.post('/', async (request, env) => {
       subject,
     })
   })
-  const text = await mail.text();
+  const text = await mail.text()
+
+  // console.log("mailchannels api status code", mail.status)
   if (!mail.ok || mail.status > 399) {
     console.error(`Error sending email: ${mail.status} ${mail.statusText} ${text}`);
     return new Response("not found", { status: 404 });

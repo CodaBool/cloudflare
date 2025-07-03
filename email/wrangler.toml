@@ -1,3 +1,7 @@
 name = "email"
 main = "main.js"
-compatibility_date = "2023-10-30"
+compatibility_date = "2025-07-01"
+
+[observability.logs]
+enabled = true
+

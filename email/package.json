@@ -7,7 +7,7 @@
     "remote": "wrangler dev --remote"
   },
   "devDependencies": {
-    "itty-router": "^5.0.17",
-    "wrangler": "^3.60.2"
+    "itty-router": "^5.0.18",
+    "wrangler": "^4.22.0"
   }
 }
