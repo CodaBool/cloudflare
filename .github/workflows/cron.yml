@@ -17,5 +17,5 @@ jobs:
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT }}
-          workingDirectory: analytics
+          workingDirectory: cron
           command: deploy
