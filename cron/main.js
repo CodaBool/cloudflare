@@ -1,5 +1,7 @@
 import { GIF_URLS } from "./gif_urls.js"
 
+const ROLE_ID = "1406074645958103180"
+
 export default {
   async scheduled(event, env, ctx) {
     return await shared(event, env, ctx)
@@ -37,8 +39,9 @@ async function shared(event, env, ctx) {
   const gif = GIF_URLS[randomIndex]
 
   // Query parameters
+  //
   const queryParams = {
-    body: `@everyone Your Pilot License Level increased at the end of last session! I'll be joining the voice channel in an hour to assist anyone with level ups. This is optional! Feel free to work async on level ups[.](${gif})`,
+    body: `<@&${ROLE_ID}> Your Pilot License Level increased at the end of last session! I'll be joining the voice channel in an hour to assist anyone with level ups. This is optional! Feel free to work async on level ups[.](${gif})`,
     secret: env.SECRET,
     test: event === "test",
     action: "manual",

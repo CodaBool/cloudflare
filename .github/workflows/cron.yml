@@ -1,0 +1,21 @@
+name: cron
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - "cron/**"
+jobs:
+  release:
+    if: "! contains(github.event.commits[0].message, '[no ci]')"
+    runs-on: ubuntu-latest
+    steps:
+      # https://github.com/marketplace/actions/checkout
+      - uses: actions/checkout@v5
+      # https://github.com/marketplace/actions/deploy-to-cloudflare-workers-with-wrangler
+      - uses: cloudflare/wrangler-action@v3
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT }}
+          workingDirectory: analytics
+          command: deploy
