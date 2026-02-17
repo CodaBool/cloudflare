@@ -66,18 +66,36 @@ export default async function itch(env, browser) {
       console.log("skipping puppeteer action, it's a free module with no keys")
       continue
     }
+
     const page = await browser.newPage()
-    await page.goto(`https://itch.io/game/external-keys/${id}`)
 
-    // login
-    await page.type('input[name="username"]', 'codabool')
-    await page.type('input[name="password"]', env.ITCH_PASSWORD)
-    const buttons = await page.$$('button')
-    await buttons[1].click()
-    await page.waitForNavigation({ waitUntil: 'networkidle0' })
+    await page.goto("https://itch.io/", { waitUntil: "domcontentloaded" })
+    // go to domain first so Chrome allows cookies for it
+    await page.setCookie(
+      {
+        name: "itchio",
+        value: env.ITCH_SESSION,   // paste yours here for testing
+        domain: ".itch.io",
+        path: "/",
+        httpOnly: true,
+        secure: true,
+        sameSite: "Lax"
+      },
+      {
+        name: "cf_clearance",
+        value: env.CF_CLEARANCE,
+        domain: ".itch.io",
+        path: "/",
+        httpOnly: true,
+        secure: true,
+        sameSite: "None"
+      }
+    );
 
-    // keys
-    await page.goto(`https://itch.io/game/external-keys/${id}`)
+    // now go to target page
+    await page.goto(`https://itch.io/game/external-keys/${id}`, {
+      waitUntil: "domcontentloaded"
+    });
 
     // find current remaining keys
     const tbody = await page.$('tbody')
