@@ -3,6 +3,7 @@ import email from './util.js'
 const MODULES = {
   2331647: "terminal",
   2413937: "maps-in-cyberspace",
+  3660537: "stargazer",
 }
 
 async function generateKeys(env, package_name) {
