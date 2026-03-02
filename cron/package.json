@@ -8,6 +8,6 @@
     "placeholder": "node --env-file .dev.vars main.js"
   },
   "devDependencies": {
-    "wrangler": "^4.19.1"
+    "wrangler": "^4.69.0"
   }
 }

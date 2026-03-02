@@ -11,9 +11,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       # https://github.com/marketplace/actions/checkout
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       # https://github.com/marketplace/actions/setup-node-js-environment
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v6
       - run: npm ci
         working-directory: d3erver
       - name: test

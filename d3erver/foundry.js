@@ -18,18 +18,16 @@ export async function foundryClient(request, env) {
 		return new Response('missing a query', { status: 400 })
 	}
 
-	const name = module.slice(0, -7)
-
 	try {
 		const tokenExists = await env.KV.get(token)
-	
+
 		if (!tokenExists) {
 			console.log(`403 /GET expired token ${token} from ${ip} country=${country} agent=${agent}. These are often false alarms, they seem to happen if the module is installed too quickly`)
 			// ============ DEBUG
 			await email("403 /GET", `expired token ${token} from ${ip} country=${country} agent=${agent}. These are often false alarms, they seem to happen if the module is installed too quickly`, "ERROR", env)
 			return new Response("expired token", { status: 403 })
 		}
-	
+
 		const zip = await env.R2.get(module)
 
 		if (zip === null) {
@@ -37,15 +35,16 @@ export async function foundryClient(request, env) {
 			await email("404 /GET", `module ${module} does not exist`, "ERROR", env)
 			return new Response(`module ${module} does not exist`, { status: 404 })
 		}
-	
+
 		if (zip.status >= 400) {
 			console.error(zip)
 			await email("500 /GET", `couldn't get module ${module} from R2 ${JSON.stringify(zip, null, 2)}`, "ERROR", env)
 			return new Response('Error fetching the zip file', { status: 500 })
 		}
-	
+
+		const name = module.split("-")[0]
 		await increment(env, "foundry", name)
-	
+
 		// Return the zip file
 		return new Response(zip.body, {
 			headers: {
@@ -76,19 +75,18 @@ export async function foundryServer(req, env) {
 		return new Response("unauthorized", { status: 403 })
 	}
 
-	
-	const uuid = await crypto.randomUUID()
+	const uuid = crypto.randomUUID()
 
 	try {
     // 4h timed token
 		await env.KV.put(uuid, body.user_id, { expirationTtl: 14400 })
-	
+
 		const data = JSON.stringify({
 			download: `https://${env.DOMAIN}/?token=${uuid}&module=${body.package_name}-v${body.version}`,
 			package_name: body.package_name,
 			version: body.version,
 		}, null, 2)
-	
+
 		return new Response(data, {
 			headers: { 'Content-Type': 'application/json' }
 		})

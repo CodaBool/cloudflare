@@ -30,22 +30,22 @@ export async function forgeDownload(request, env) {
 
 	try {
 		const zip = await env.R2.get(module)
-	
+
 		if (zip === null) {
 			console.error("Forge server asked for module", module, "which does not exist")
 			await email("404 /forge", `module ${module} does not exist`, "ERROR", env)
 			return new Response(`module ${module} does not exist`, { status: 404 })
 		}
-	
+
 		if (zip.status >= 400) {
 			console.error(zip)
 			await email("500 /forge", `couldn't get module ${module} from R2 ${JSON.stringify(zip, null, 2)}`, "ERROR", env)
 			return new Response('Error fetching the zip file', { status: 500 })
 		}
-	
-		const name = module.slice(0, -7)
+
+		const name = module.split("-")[0]
 		await increment(env, "forge", name)
-	
+
 		return new Response(zip.body, {
 			headers: {
 				'Content-Type': 'application/zip',
@@ -109,7 +109,8 @@ export async function forgeManifest(request, env) {
         return new Response("bad module", { status: 400 });
       }
     }
-    
+    if (!res) return new Response("cannot find module", { status: 404 })
+
 		// append manifest and download props with secrets
 		const template = JSON.parse(res.data)
 		template.manifest = `https://${env.DOMAIN}/manifest?secret=${secret}&module=${moduleName}`
@@ -128,9 +129,9 @@ export async function forgeManifest(request, env) {
 				template.version = "0.0.0"
 			}
 		}
-	
+
 		const secretJSON = JSON.stringify(template, null, 2)
-	
+
 		return new Response(secretJSON, {
 			headers: {
 				'Content-Type': 'application/json',
@@ -169,23 +170,23 @@ export async function forgeLatest(request, env) {
 
 	try {
 		// get latest version
-		const { data } = await env.D1.prepare("SELECT * FROM manifests WHERE module='terminal'").first()
+		const { data } = await env.D1.prepare(`SELECT * FROM manifests WHERE module='${module}'`).first()
 		const manifest = JSON.parse(data)
 
 		const zip = await env.R2.get(`${module}-v${manifest.version}`)
-	
+
 		if (zip === null) {
 			console.error("Forge server asked for module", module, "which does not exist")
 			await email("404 /latest", `module ${module} does not exist`, "ERROR", env)
 			return new Response(`module ${module} does not exist`, { status: 404 })
 		}
-	
+
 		if (zip.status >= 400) {
 			console.error(zip)
 			await email("500 /latest", `couldn't get module ${module} from R2 ${JSON.stringify(zip, null, 2)}`, "ERROR", env)
 			return new Response('Error fetching the zip file', { status: 500 })
 		}
-	
+
 		return new Response(zip.body, {
 			headers: {
 				'Content-Type': 'application/zip',
