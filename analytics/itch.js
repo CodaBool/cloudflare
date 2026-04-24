@@ -67,7 +67,7 @@ export default async function itch(env, browser) {
         })
       } else {
         const { meta } = await env.D1.prepare(`UPDATE sales SET views = ?, sold = ? WHERE module = ? AND platform = 'itch'`).bind(game.views_count, game.purchases_count, MODULES[id]).run()
-        console.log(`update D1 purchases table (${meta.rows_written}rows written )`)
+        console.log(`update D1 purchases table (${meta.rows_written} rows written )`)
       }
       console.log("skipping puppeteer action, it's a free module with no keys")
       continue
@@ -107,16 +107,20 @@ export default async function itch(env, browser) {
 
 
     // find current remaining keys
-    const tbody = await page.$('tbody')
-    console.log("raw body", tbody)
-    if (!tbody) {
-      console.log("failed to get itch body", tbody)
+    await page.waitForSelector('tbody', { timeout: 10000 }).catch(() => null)
+
+    console.log("final url", page.url())
+
+    const tds = await page.$$('tbody td')
+
+    if (tds.length < 2) {
+      console.log("could not find expected keys table")
+      console.log(await page.title())
+      console.log(await page.content())
       continue
     }
-    const itchBody = await tbody.$$('td')
-    console.log("raw itchBody", itchBody)
-    const secondTd = itchBody.then(tds => tds[1])
-    let keys = await page.evaluate(el => el.textContent, secondTd)
+
+    let keys = await page.evaluate(el => el.textContent.trim(), tds[1])
     keys = Number(keys)
 
     const log = `${game.title} has ${keys}/${env.MINIMUM} keys`
@@ -156,7 +160,8 @@ export default async function itch(env, browser) {
     }
 
     // Close the browser
-    await browser.close()
+    await page?.close()
+    await browser?.close()
 
     // update DB
     if (env.LOCAL) {
@@ -171,7 +176,7 @@ export default async function itch(env, browser) {
       })
     } else {
       const { meta } = await env.D1.prepare(`UPDATE sales SET keys = ?, views = ?, sold = ? WHERE module = ? AND platform = 'itch'`).bind(keys, game.views_count, game.purchases_count, MODULES[id]).run()
-      console.log(`update D1 purchases table (${meta.rows_written}rows written )`)
+      console.log(`update D1 purchases table (${meta.rows_written} rows written )`)
     }
 
     console.log(`currently at ${keys} keys, verify at https://itch.io/game/external-keys/${id}/other for ${game.title}`)
