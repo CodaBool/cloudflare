@@ -98,17 +98,17 @@ export async function forgeManifest(request, env) {
 	try {
 		// D1 will have values updated from module Github Actions
 		let res
-    if (forge) {
-      res = await env.D1.prepare("SELECT * FROM manifests WHERE module='codabool-terminal-test'").first();
+    // if (forge) {
+    //   res = await env.D1.prepare("SELECT * FROM manifests WHERE module='codabool-terminal-test'").first();
+    // } else {
+    if (possibleModules.includes(moduleName)) {
+      res = await env.D1.prepare(`SELECT * FROM manifests WHERE module='${moduleName}'`).first();
     } else {
-      if (possibleModules.includes(moduleName)) {
-        res = await env.D1.prepare(`SELECT * FROM manifests WHERE module='${moduleName}'`).first();
-      } else {
-        console.error(`400 /manifest possible inject attempt ${moduleName} from ${ip} country=${country}`);
-        await email("400 /manifest", `400 /manifest possible inject attempt ${moduleName} from ${ip} country=${country}`, "ERROR", env);
-        return new Response("bad module", { status: 400 });
-      }
+      console.error(`400 /manifest possible inject attempt ${moduleName} from ${ip} country=${country}`);
+      await email("400 /manifest", `400 /manifest possible inject attempt ${moduleName} from ${ip} country=${country}`, "ERROR", env);
+      return new Response("bad module", { status: 400 });
     }
+    // }
     if (!res) return new Response("cannot find module", { status: 404 })
 
 		// append manifest and download props with secrets
@@ -116,19 +116,19 @@ export async function forgeManifest(request, env) {
 		template.manifest = `https://${env.DOMAIN}/manifest?secret=${secret}&module=${moduleName}`
 		template.download = `https://${env.DOMAIN}/forge?secret=${env.FORGE_SECRET}&module=terminal-v${template.version}`
 
-		if (beta) {
-			// append manifest and download props with secrets
-			template.manifest = `https://${env.DOMAIN}/manifest?secret=${secret}&module=${moduleName}&beta=true`
-			template.download = `https://${env.DOMAIN}/forge?secret=${env.FORGE_SECRET}&module=${moduleName}-v0.0.0`
-			console.log("template version", template.version)
-			if (forge) {
-				template.manifest = `https://${env.DOMAIN}/manifest?secret=${secret}&module=${moduleName}&beta=true&forge=true`
-				template.title = "codabool-terminal-test"
-				template.id = "codabool-terminal-test"
-			} else {
-				template.version = "0.0.0"
-			}
-		}
+		// if (beta) {
+		// 	// append manifest and download props with secrets
+		// 	template.manifest = `https://${env.DOMAIN}/manifest?secret=${secret}&module=${moduleName}&beta=true`
+		// 	template.download = `https://${env.DOMAIN}/forge?secret=${env.FORGE_SECRET}&module=${moduleName}-v0.0.0`
+		// 	console.log("template version", template.version)
+		// 	if (forge) {
+		// 		template.manifest = `https://${env.DOMAIN}/manifest?secret=${secret}&module=${moduleName}&beta=true&forge=true`
+		// 		template.title = "codabool-terminal-test"
+		// 		template.id = "codabool-terminal-test"
+		// 	} else {
+		// 		template.version = "0.0.0"
+		// 	}
+		// }
 
 		const secretJSON = JSON.stringify(template, null, 2)
 
