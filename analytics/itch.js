@@ -47,8 +47,13 @@ export default async function itch(env, browser) {
   })
 
   let added = 0
+  console.log("here! 1")
   for (const [id, game] of ids) {
+    console.log("here! 2", id)
     if (game.min_price === 0) {
+      console.log("here! 3", "price", game.min_price)
+
+
       // update DB
       if (env.LOCAL) {
         await fetch(
@@ -71,6 +76,8 @@ export default async function itch(env, browser) {
     const page = await browser.newPage()
 
     await page.goto("https://itch.io/", { waitUntil: "domcontentloaded" })
+
+    console.log("cookie checkpoint | ITCH_SESSION =", env.ITCH_SESSION, " | CF_CLEARANCE", env.CF_CLEARANCE)
     // go to domain first so Chrome allows cookies for it
     await page.setCookie(
       {
@@ -98,9 +105,17 @@ export default async function itch(env, browser) {
       waitUntil: "domcontentloaded"
     });
 
+
     // find current remaining keys
     const tbody = await page.$('tbody')
-    const secondTd = await tbody.$$('td').then(tds => tds[1])
+    console.log("raw body", tbody)
+    if (!tbody) {
+      console.log("failed to get itch body", tbody)
+      continue
+    }
+    const itchBody = await tbody.$$('td')
+    console.log("raw itchBody", itchBody)
+    const secondTd = itchBody.then(tds => tds[1])
     let keys = await page.evaluate(el => el.textContent, secondTd)
     keys = Number(keys)
 
@@ -161,6 +176,9 @@ export default async function itch(env, browser) {
 
     console.log(`currently at ${keys} keys, verify at https://itch.io/game/external-keys/${id}/other for ${game.title}`)
   }
+
+
+  console.log("here! 5")
 
   console.log(`added ${added} keys today`)
   if (added) {
