@@ -47,9 +47,8 @@ export default async function itch(env, browser) {
   })
 
   let added = 0
-  console.log("here! 1")
   for (const [id, game] of ids) {
-    console.log("here! 2", id)
+    console.log("here! headless for", MODULES[id])
     if (game.min_price === 0) {
       console.log("here! 3", "price", game.min_price)
 
@@ -160,8 +159,7 @@ export default async function itch(env, browser) {
     }
 
     // Close the browser
-    await page?.close()
-    await browser?.close()
+    await page.close()
 
     // update DB
     if (env.LOCAL) {
@@ -184,6 +182,8 @@ export default async function itch(env, browser) {
 
 
   console.log("here! 5")
+  await browser.close()
+
 
   console.log(`added ${added} keys today`)
   if (added) {
