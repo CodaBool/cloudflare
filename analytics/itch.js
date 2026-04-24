@@ -106,11 +106,15 @@ export default async function itch(env, browser) {
 
 
     // find current remaining keys
-    await page.waitForSelector('tbody', { timeout: 10000 }).catch(() => null)
+    await page.waitForSelector('tbody', { timeout: 10000 }).catch(err => {
+      console.log("ran into err waiting for tbody | err =", err)
+    })
 
     console.log("final url", page.url())
 
     const tds = await page.$$('tbody td')
+
+    console.log("tbody tds found =", tds.length)
 
     if (tds.length < 2) {
       console.log("could not find expected keys table")
