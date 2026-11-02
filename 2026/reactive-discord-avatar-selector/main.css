@@ -1,0 +1,94 @@
+:root,
+html,
+body {
+  background: transparent !important;
+  overflow: hidden !important;
+}
+
+/* Hide names */
+#embed .self-center {
+  display: none !important;
+}
+
+/* Hide original canvas pixels for avatars 1-4 only */
+#embed .flex[style*="flex-direction: row"] > .flex.items-center.justify-center:nth-of-type(1) canvas,
+#embed .flex[style*="flex-direction: row"] > .flex.items-center.justify-center:nth-of-type(2) canvas,
+#embed .flex[style*="flex-direction: row"] > .flex.items-center.justify-center:nth-of-type(3) canvas,
+#embed .flex[style*="flex-direction: row"] > .flex.items-center.justify-center:nth-of-type(4) canvas {
+  opacity: 0 !important;
+}
+
+/* Base image layer */
+#embed .flex[style*="flex-direction: row"] > .flex.items-center.justify-center:nth-of-type(1) > .relative.flex.shrink-0,
+#embed .flex[style*="flex-direction: row"] > .flex.items-center.justify-center:nth-of-type(2) > .relative.flex.shrink-0,
+#embed .flex[style*="flex-direction: row"] > .flex.items-center.justify-center:nth-of-type(3) > .relative.flex.shrink-0,
+#embed .flex[style*="flex-direction: row"] > .flex.items-center.justify-center:nth-of-type(4) > .relative.flex.shrink-0 {
+  position: relative !important;
+  background-repeat: no-repeat !important;
+  background-position: center bottom !important;
+  background-size: contain !important;
+  transition: filter 120ms ease, transform 120ms ease !important;
+}
+
+/* Avatar #1 - Crow */
+#embed .flex[style*="flex-direction: row"] > .flex.items-center.justify-center:nth-of-type(1)[data-speaking="false"] > .relative.flex.shrink-0 {
+  background-image: url("https://gist.github.com/user-attachments/assets/d83d977e-c6bb-4a7c-aa8a-f3c64da44778") !important;
+  filter: brightness(0.85);
+}
+
+#embed .flex[style*="flex-direction: row"] > .flex.items-center.justify-center:nth-of-type(1)[data-speaking="true"] > .relative.flex.shrink-0 {
+  background-image: url("https://gist.github.com/user-attachments/assets/03bc37b1-1603-4b3a-8f8e-1d60ae7e2f27") !important;
+  filter: brightness(1);
+}
+
+/* Avatar #2 - Dog */
+#embed .flex[style*="flex-direction: row"] > .flex.items-center.justify-center:nth-of-type(2)[data-speaking="false"] > .relative.flex.shrink-0 {
+  background-image: url("https://gist.github.com/user-attachments/assets/4a70b2ea-52b7-4601-805c-cb03fbe9613d") !important;
+  filter: brightness(0.85);
+}
+
+#embed .flex[style*="flex-direction: row"] > .flex.items-center.justify-center:nth-of-type(2)[data-speaking="true"] > .relative.flex.shrink-0 {
+  background-image: url("https://gist.github.com/user-attachments/assets/ca21c29f-c7e0-427d-8dd8-c66d86dcdb92") !important;
+  filter: brightness(1);
+}
+
+/* Avatar #3 - old working Avatar #4 images */
+#embed .flex[style*="flex-direction: row"] > .flex.items-center.justify-center:nth-of-type(3)[data-speaking="false"] > .relative.flex.shrink-0 {
+  background-image: url("https://reactive-cdn.fugi.tech/k/E/N09qeoDZpIPacNHeDofW0zNvojYDB25EKCuoSdSwd.avif") !important;
+  filter: brightness(0.85);
+}
+
+#embed .flex[style*="flex-direction: row"] > .flex.items-center.justify-center:nth-of-type(3)[data-speaking="true"] > .relative.flex.shrink-0 {
+  background-image: url("https://reactive-cdn.fugi.tech/p/j/jRSS4GrYlDwsMnQyayngMAaQmxOit7YFoh60LYcZS.avif") !important;
+  filter: brightness(1);
+}
+
+/* Avatar #4 - old working Avatar #5 images */
+#embed .flex[style*="flex-direction: row"] > .flex.items-center.justify-center:nth-of-type(4)[data-speaking="false"] > .relative.flex.shrink-0 {
+  background-image: url("https://reactive-cdn.fugi.tech/h/t/Pe49NL4VIQgME6kgEaehKwWExVrT82LrJmCULR3LB.avif") !important;
+  filter: brightness(0.85);
+}
+
+#embed .flex[style*="flex-direction: row"] > .flex.items-center.justify-center:nth-of-type(4)[data-speaking="true"] > .relative.flex.shrink-0 {
+  background-image: url("https://reactive-cdn.fugi.tech/m/y/fIvYAMz0h9dsdXuVvp5nwul5QqAvhNUVnW0lheO1M.avif") !important;
+  filter: brightness(1);
+}
+
+/* Speaking bounce for avatars 1-4 */
+#embed .flex[style*="flex-direction: row"] > .flex.items-center.justify-center:nth-of-type(1)[data-speaking="true"] > .relative.flex.shrink-0,
+#embed .flex[style*="flex-direction: row"] > .flex.items-center.justify-center:nth-of-type(2)[data-speaking="true"] > .relative.flex.shrink-0,
+#embed .flex[style*="flex-direction: row"] > .flex.items-center.justify-center:nth-of-type(3)[data-speaking="true"] > .relative.flex.shrink-0,
+#embed .flex[style*="flex-direction: row"] > .flex.items-center.justify-center:nth-of-type(4)[data-speaking="true"] > .relative.flex.shrink-0 {
+  animation: talk-bob 0.6s ease-in-out infinite;
+}
+
+@keyframes talk-bob {
+  0%,
+  100% {
+    transform: translateY(2%);
+  }
+
+  50% {
+    transform: translateY(0);
+  }
+}

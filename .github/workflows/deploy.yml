@@ -1,0 +1,57 @@
+name: deploy
+on:
+  push:
+    branches:
+      - main
+jobs:
+  # finds every folder with a wrangler.toml (outside vault/ and d3erver/) that this push changed
+  changes:
+    if: "! contains(github.event.commits[0].message, '[no ci]')"
+    runs-on: ubuntu-latest
+    outputs:
+      projects: ${{ steps.find.outputs.projects }}
+    steps:
+      # https://github.com/marketplace/actions/checkout
+      - uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+      - id: find
+        run: |
+          # d3erver has its own workflow because it runs tests before deploying
+          all=$(find . -name wrangler.toml -not -path './vault/*' -not -path './d3erver/*' -not -path '*/node_modules/*' -printf '%h\n' | sed 's|^\./||' | sort)
+          # a new branch has no "before" commit, so deploy everything
+          if [ "$BEFORE" = "0000000000000000000000000000000000000000" ]; then
+            changed="$all"
+          else
+            files=$(git diff --name-only "$BEFORE" "$GITHUB_SHA")
+            changed=$(for p in $all; do echo "$files" | grep -q "^$p/" && echo "$p"; done)
+          fi
+          echo "projects=$(echo "$changed" | jq -Rnc '[inputs | select(length > 0)]')" >> "$GITHUB_OUTPUT"
+        env:
+          BEFORE: ${{ github.event.before }}
+
+  release:
+    needs: changes
+    if: needs.changes.outputs.projects != '[]'
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        project: ${{ fromJSON(needs.changes.outputs.projects) }}
+    steps:
+      # https://github.com/marketplace/actions/checkout
+      - uses: actions/checkout@v7
+      # https://github.com/marketplace/actions/setup-node-js-environment
+      - uses: actions/setup-node@v7
+      - run: npm ci
+        working-directory: ${{ matrix.project }}
+      # vite projects deploy ./dist, so build it first
+      - run: npm run build --if-present
+        working-directory: ${{ matrix.project }}
+      # https://github.com/marketplace/actions/deploy-to-cloudflare-workers-with-wrangler
+      - uses: cloudflare/wrangler-action@v4
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT }}
+          workingDirectory: ${{ matrix.project }}
+          command: deploy

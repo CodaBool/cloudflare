@@ -1,0 +1,16 @@
+{
+  "name": "oubliette",
+  "type": "module",
+  "scripts": {
+    "dev": "vite --host",
+    "build": "vite build",
+    "preview": "vite preview",
+    "deploy": "vite build && wrangler deploy"
+  },
+  "devDependencies": {
+    "gray-matter": "^4.0.3",
+    "markdown-it": "^15.0.3",
+    "vite": "^8.3.5",
+    "wrangler": "^4.156.1"
+  }
+}

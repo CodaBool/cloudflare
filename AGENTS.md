@@ -9,7 +9,7 @@ Each top-level folder with a `wrangler.toml` is its own Cloudflare Worker, with 
 
 ## Deploying
 
-- Each file in `.github/workflows/` deploys one worker when a push to `main` changes files in that worker's folder. Commit to `main` only when you mean to ship.
+- On a push to `main`, `.github/workflows/deploy.yml` runs `wrangler deploy` for every active worker whose folder changed. `d3erver` has its own `d3erver.yml`, which runs the tests first. Commit to `main` only when you mean to ship.
 - To push without deploying, put `[no ci]` in the commit message.
 
 ## Shared state
@@ -23,6 +23,6 @@ Each top-level folder with a `wrangler.toml` is its own Cloudflare Worker, with 
 
 ## Code conventions
 
-- `d3erver` routes with itty-router's `AutoRouter`. Other workers route by hand in their `fetch` handler.
+- Workers route by hand in their `fetch` handler. `d3erver` uses a `routes` table in `main.js` keyed by `"METHOD /path"`.
 - Alerts go out by email through the MailChannels API (`x-api-key` header). For errors in `d3erver`, use the helpers in `util.js`: `email(subject, valueOrError, name, env)`, `errObj`, `getRequestInfo`.
 - New `d3erver` handlers should log the way `forge.js` does: a per-request `requestId`, a `[route][requestId]` log prefix, and structured objects passed to `console.*`.

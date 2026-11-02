@@ -1,0 +1,2211 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1"
+  >
+  <link rel="icon" href="/favicon-32x32.gif" />
+  <title>Desires</title>
+
+  <style>
+    :root {
+      --background: #ead6d8;
+      --paper: #f6e9e8;
+      --paper-dark: #ecd8d9;
+
+      --ink: #24181a;
+      --wine: #641c31;
+      --gold: #96764d;
+
+      --card-width: 380px;
+      --card-height: 590px;
+
+      --radius: 10px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+
+      color: var(--ink);
+
+      font-family:
+        Baskerville,
+        "Baskerville Old Face",
+        "Iowan Old Style",
+        "Palatino Linotype",
+        Georgia,
+        serif;
+
+      background:
+        radial-gradient(
+          circle at 20% 10%,
+          rgba(255, 255, 255, 0.45),
+          transparent 28%
+        ),
+        radial-gradient(
+          circle at 80% 20%,
+          rgba(100, 28, 49, 0.05),
+          transparent 24%
+        ),
+        linear-gradient(
+          180deg,
+          #f0dddf,
+          var(--background)
+        );
+    }
+
+    /*
+     * Very faint paper texture.
+     */
+    body::before {
+      content: "";
+
+      position: fixed;
+      inset: 0;
+
+      pointer-events: none;
+
+      opacity: 0.2;
+
+      background-image:
+        repeating-linear-gradient(
+          0deg,
+          rgba(255, 255, 255, 0.12) 0,
+          rgba(255, 255, 255, 0.12) 1px,
+          transparent 1px,
+          transparent 4px
+        );
+    }
+
+    /*
+     * PAGE HEADER
+     */
+
+    header {
+      width: min(900px, calc(100% - 40px));
+
+      margin: 0 auto;
+
+      padding:
+        56px
+        20px
+        26px;
+
+      text-align: center;
+    }
+
+    .eyebrow {
+      margin: 0 0 10px;
+
+      color: var(--wine);
+
+      text-transform: uppercase;
+
+      letter-spacing: 0.24em;
+
+      font-size: 0.72rem;
+    }
+
+    h1 {
+      margin: 0;
+
+      font-size: clamp(
+        3rem,
+        7vw,
+        5rem
+      );
+
+      font-weight: 400;
+
+      font-variant: small-caps;
+
+      letter-spacing: 0.1em;
+    }
+
+    .subtitle {
+      max-width: 680px;
+
+      margin:
+        12px
+        auto
+        0;
+
+      font-style: italic;
+
+      line-height: 1.6;
+
+      opacity: 0.72;
+    }
+
+    .divider {
+      width: min(420px, 70vw);
+
+      height: 1px;
+
+      margin:
+        26px
+        auto
+        0;
+
+      background:
+        linear-gradient(
+          90deg,
+          transparent,
+          var(--gold),
+          var(--wine),
+          var(--gold),
+          transparent
+        );
+    }
+
+    /*
+     * CARD GRID
+     */
+
+    main {
+      width: min(
+        1700px,
+        calc(100% - 30px)
+      );
+
+      margin: 0 auto;
+
+      padding:
+        25px
+        0
+        80px;
+    }
+
+    .cards {
+      display: grid;
+
+      grid-template-columns:
+        repeat(
+          auto-fit,
+          minmax(
+            min(
+              100%,
+              var(--card-width)
+            ),
+            var(--card-width)
+          )
+        );
+
+      justify-content: center;
+
+      gap: 40px;
+    }
+
+    /*
+     * CARD
+     */
+
+    .card {
+      width: min(
+        100%,
+        var(--card-width)
+      );
+
+      height: var(--card-height);
+
+      perspective: 1600px;
+
+      outline: none;
+
+      cursor: pointer;
+    }
+
+    .card-inner {
+      position: relative;
+
+      width: 100%;
+      height: 100%;
+
+      transform-style: preserve-3d;
+
+      transition:
+        transform
+        650ms
+        cubic-bezier(
+          0.2,
+          0.75,
+          0.2,
+          1
+        );
+    }
+
+    /*
+     * Mouse hover.
+     */
+
+    .card:hover .card-inner,
+    .card:focus .card-inner,
+    .card:focus-within .card-inner {
+      transform: none;
+    }
+
+    .card-face {
+      position: absolute;
+
+      inset: 0;
+
+      overflow: hidden;
+
+      backface-visibility: hidden;
+      -webkit-backface-visibility: hidden;
+
+      border:
+        1px
+        solid
+        rgba(
+          36,
+          24,
+          26,
+          0.65
+        );
+
+      border-radius: var(--radius);
+
+      color: var(--ink);
+
+      background:
+        radial-gradient(
+          circle at 30% 25%,
+          rgba(255, 255, 255, 0.5),
+          transparent 26%
+        ),
+        linear-gradient(
+          145deg,
+          rgba(255, 255, 255, 0.26),
+          transparent 45%
+        ),
+        var(--paper);
+
+      box-shadow:
+        0 18px 45px
+        rgba(
+          61,
+          29,
+          36,
+          0.14
+        ),
+        inset
+        0
+        0
+        0
+        7px
+        rgba(
+          255,
+          255,
+          255,
+          0.15
+        ),
+        inset
+        0
+        0
+        0
+        9px
+        rgba(
+          100,
+          28,
+          49,
+          0.06
+        );
+    }
+
+    /*
+     * Minimal Regency ornaments.
+     */
+
+    .card-face::before {
+      content: "❧";
+
+      position: absolute;
+
+      top: 14px;
+      left: 17px;
+
+      color: var(--wine);
+
+      font-size: 2rem;
+
+      opacity: 0.6;
+
+      transform: rotate(-20deg);
+    }
+
+    .card-face::after {
+      content: "❧";
+
+      position: absolute;
+
+      right: 17px;
+      bottom: 14px;
+
+      color: var(--wine);
+
+      font-size: 2rem;
+
+      opacity: 0.6;
+
+      transform: rotate(160deg);
+    }
+
+    /*
+     * FRONT
+     */
+
+    .card-front {
+      display: flex;
+
+      flex-direction: column;
+
+      padding:
+        30px
+        30px
+        32px;
+    }
+
+    .number {
+      text-align: center;
+
+      color: var(--wine);
+
+      font-size: 0.85rem;
+
+      letter-spacing: 0.16em;
+    }
+
+    .card-type {
+      margin-top: 20px;
+
+      text-align: center;
+
+      text-transform: uppercase;
+
+      font-variant: small-caps;
+
+      letter-spacing: 0.26em;
+
+      font-size: 1.45rem;
+    }
+
+    .difficulty {
+      margin-top: 8px;
+
+      text-align: center;
+
+      text-transform: uppercase;
+
+      font-style: italic;
+
+      font-size: 0.8rem;
+
+      letter-spacing: 0.16em;
+    }
+
+    .difficulty::before,
+    .difficulty::after {
+      content: "—";
+
+      margin:
+        0
+        0.65em;
+
+      color: var(--wine);
+    }
+
+    .flavor-container {
+      flex: 1;
+
+      display: grid;
+
+      place-items: center;
+
+      padding:
+        30px
+        8px
+        20px;
+    }
+
+    .flavor {
+      max-width: 300px;
+
+      margin: 0;
+
+      text-align: center;
+
+      font-size: 3rem;
+
+      font-style: italic;
+
+      font-weight: 400;
+
+      line-height: 1.08;
+    }
+
+    .motif {
+      text-align: center;
+
+      color: var(--wine);
+
+      font-size: 1.35rem;
+
+      letter-spacing: 0.25em;
+
+      opacity: 0.65;
+    }
+
+    /*
+     * BACK
+     */
+
+    .card-back {
+      display: flex;
+
+      flex-direction: column;
+
+      padding:
+        31px
+        29px;
+
+      transform: rotateY(180deg);
+
+      background:
+        radial-gradient(
+          circle at 70% 18%,
+          rgba(100, 28, 49, 0.05),
+          transparent 28%
+        ),
+        linear-gradient(
+          180deg,
+          #f8eded,
+          var(--paper-dark)
+        );
+    }
+
+    .back-label {
+      margin-bottom: 12px;
+
+      text-align: center;
+
+      text-transform: uppercase;
+
+      color: var(--wine);
+
+      font-size: 0.7rem;
+
+      font-weight: bold;
+
+      letter-spacing: 0.2em;
+    }
+
+    .desire-title {
+      margin:
+        0
+        0
+        17px;
+
+      text-align: center;
+
+      font-size: 1.6rem;
+
+      font-weight: 400;
+
+      line-height: 1.22;
+    }
+
+    .back-rule {
+      width: 80%;
+
+      height: 1px;
+
+      margin:
+        0
+        auto
+        19px;
+
+      background:
+        linear-gradient(
+          90deg,
+          transparent,
+          rgba(
+            100,
+            28,
+            49,
+            0.55
+          ),
+          transparent
+        );
+    }
+
+    /*
+     * Long cards can scroll internally.
+     */
+
+    .card-content {
+      overflow-y: auto;
+
+      padding-right: 7px;
+
+      scrollbar-width: thin;
+
+      scrollbar-color:
+        rgba(
+          100,
+          28,
+          49,
+          0.4
+        )
+        transparent;
+    }
+
+    .section {
+      margin-bottom: 17px;
+    }
+
+    .section:last-child {
+      margin-bottom: 0;
+    }
+
+    .section h3 {
+      margin:
+        0
+        0
+        5px;
+
+      color: var(--wine);
+
+      font-size: 0.7rem;
+
+      text-transform: uppercase;
+
+      letter-spacing: 0.14em;
+    }
+
+    .section p {
+      margin: 0;
+
+      font-size: 0.96rem;
+
+      line-height: 1.5;
+    }
+
+    #desire-dialog {
+      width: min(760px, calc(100% - 32px));
+      height: calc(100dvh - 32px);
+
+      max-height: 900px;
+
+      padding: 0;
+
+      border: 0;
+
+      background: transparent;
+    }
+
+    #desire-dialog::backdrop {
+      background: rgba(36, 24, 26, 0.62);
+    }
+
+    .dialog-card {
+      height: 100%;
+    }
+
+    #desire-dialog .card-back {
+      position: relative;
+
+      display: flex;
+
+      height: 100%;
+
+      transform: none;
+    }
+
+    #desire-dialog .back-label {
+      margin-top: 8px;
+
+      font-size: 0.9rem;
+    }
+
+    #desire-dialog .desire-title {
+      max-width: 620px;
+
+      margin-right: auto;
+      margin-left: auto;
+
+      font-size: clamp(2rem, 4.5vw, 2.8rem);
+    }
+
+    #desire-dialog .card-content {
+      padding: 0 12px 12px 0;
+    }
+
+    #desire-dialog .section p {
+      font-size: 1.3rem;
+      line-height: 1.65;
+    }
+
+    #desire-dialog .section h3 {
+      font-size: 0.9rem;
+    }
+
+    /*
+     * FOOTER
+     */
+
+    footer {
+      padding:
+        0
+        20px
+        45px;
+
+      text-align: center;
+
+      font-size: 0.8rem;
+
+      font-style: italic;
+
+      opacity: 0.55;
+    }
+
+    /*
+     * MOBILE
+     */
+
+    @media (max-width: 450px) {
+      :root {
+        --card-height: 555px;
+      }
+
+      main {
+        width:
+          calc(
+            100% - 18px
+          );
+      }
+
+      .cards {
+        gap: 24px;
+      }
+
+      .card-front,
+      .card-back {
+        padding-left: 23px;
+        padding-right: 23px;
+      }
+
+      .flavor {
+        font-size: 2.35rem;
+      }
+    }
+
+    /*
+     * Don't animate for users who disable motion.
+     */
+
+    @media (
+      prefers-reduced-motion:
+      reduce
+    ) {
+      .card-inner {
+        transition: none;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <header>
+    <p class="eyebrow">
+      A Regency Voyage of Longing, Scandal & Blood
+    </p>
+
+    <h1>Desires</h1>
+
+    <p class="subtitle">
+      Sixteen ambitions aboard a voyage of
+      reputation, courtship, inheritance, rivalry,
+      forbidden affection, and things best kept
+      from the daylight.
+    </p>
+
+    <div class="divider"></div>
+  </header>
+
+
+  <main>
+    <section
+      class="cards"
+      aria-label="Desire cards"
+    >
+
+      <!-- ====================================================== -->
+      <!-- DESIRE 1 -->
+      <!-- ====================================================== -->
+
+      <article
+        class="card"
+        tabindex="0"
+      >
+        <div class="card-inner">
+
+          <section class="card-face card-front">
+
+            <div class="number">
+              #01
+            </div>
+
+            <div class="card-type">
+              Desire
+            </div>
+
+            <div class="difficulty">
+              Basic
+            </div>
+
+            <div class="flavor-container">
+              <p class="flavor">
+                What is right to be done
+                cannot be done too soon
+              </p>
+            </div>
+
+            <div class="motif">
+              ⚓ ❦ ⚓
+            </div>
+
+          </section>
+
+
+          <section class="card-face card-back">
+
+            <div class="back-label">
+              Desire #01
+            </div>
+
+            <h2 class="desire-title">
+              Restore your reputation and be forgiven
+              by your former friend
+            </h2>
+
+            <div class="back-rule"></div>
+
+            <div class="card-content">
+
+              <div class="section">
+                <h3>Description</h3>
+
+                <p>
+                  Once you enjoyed the pleasures of friendly
+                  company and good opinion until in a single
+                  instant, your mad passions led you to throw
+                  it all away. In one rash act you wronged
+                  another deeply and plunged yourself into
+                  interminable disrepute. Now all you seek is
+                  to bury your past, regain your good name,
+                  and find forgiveness.
+                </p>
+              </div>
+
+              <div class="section">
+                <h3>Instructions</h3>
+
+                <p>
+                  Tell the group what you did, then create and
+                  spread a rumour about it.
+                </p>
+              </div>
+
+            </div>
+
+          </section>
+
+        </div>
+      </article>
+
+
+      <!-- ====================================================== -->
+      <!-- DESIRE 2 -->
+      <!-- ====================================================== -->
+
+      <article
+        class="card"
+        tabindex="0"
+      >
+        <div class="card-inner">
+
+          <section class="card-face card-front">
+
+            <div class="number">
+              #02
+            </div>
+
+            <div class="card-type">
+              Desire
+            </div>
+
+            <div class="difficulty">
+              Complex
+            </div>
+
+            <div class="flavor-container">
+              <p class="flavor">
+                They were as strangers;
+                worse than strangers for
+                they could never become acquainted
+              </p>
+            </div>
+
+            <div class="motif">
+              ☾ ❦ ☽
+            </div>
+
+          </section>
+
+
+          <section class="card-face card-back">
+
+            <div class="back-label">
+              Desire #02
+            </div>
+
+            <h2 class="desire-title">
+              Convince your parent to accept you as their
+              legitimate child, and declare your relation
+              to all the world.
+            </h2>
+
+            <div class="back-rule"></div>
+
+            <div class="card-content">
+
+              <div class="section">
+                <h3>Description</h3>
+
+                <p>
+                  Though biology dictates that a child requires
+                  two parents, you have never beheld evidence
+                  of more than one. Born out of wedlock, your
+                  wealthier and more powerful progenitor refused
+                  to acknowledge you from an early age. Now the
+                  time has come for a family reunion. And, be it
+                  by charm, favours or less savoury means, you
+                  will find a way to have them acknowledge you
+                  as their own progeny.
+                </p>
+              </div>
+
+              <div class="section">
+                <h3>Instructions</h3>
+
+                <p>
+                  Create a parent NPC and give the Facilitator a
+                  short description. You may use a <a href="https://mosh.codabool.com/" target="_blank">generator</a> to develop further details.
+                </p>
+              </div>
+
+            </div>
+
+          </section>
+
+        </div>
+      </article>
+
+
+      <!-- ====================================================== -->
+      <!-- DESIRE 3 -->
+      <!-- ====================================================== -->
+
+      <article
+        class="card"
+        tabindex="0"
+      >
+        <div class="card-inner">
+
+          <section class="card-face card-front">
+
+            <div class="number">
+              #03
+            </div>
+
+            <div class="card-type">
+              Desire
+            </div>
+
+            <div class="difficulty">
+              Basic
+            </div>
+
+            <div class="flavor-container">
+              <p class="flavor">
+                Selfishness must always be
+                forgiven you know, because
+                there is no hope of a cure
+              </p>
+            </div>
+
+            <div class="motif">
+              ❦ ♡ ❦
+            </div>
+
+          </section>
+
+
+          <section class="card-face card-back">
+
+            <div class="back-label">
+              Desire #03
+            </div>
+
+            <h2 class="desire-title">
+              Court at least two eligible individuals. Accept one
+              and discreetly farewell the others.
+            </h2>
+
+            <div class="back-rule"></div>
+
+            <div class="card-content">
+
+              <div class="section">
+                <h3>Description</h3>
+
+                <p>
+                  People in this world are so unreliable.
+                  Even the most faithful of affections are
+                  quickly cast aside when a wealthier target
+                  comes into view. You have realised the folly
+                  of putting your hopes in but one place.
+                  The careful hunter checks all their snares—
+                  and only the finest morsel is cooked and
+                  eaten for dinner.
+                </p>
+              </div>
+
+              <div class="section">
+                <h3>Instructions</h3>
+
+                <p>
+                  Tell the group you are seeking several eligible
+                  romantic prospects. Before play, establish who
+                  you might pursue.
+                </p>
+              </div>
+
+            </div>
+
+          </section>
+
+        </div>
+      </article>
+
+
+      <!-- ====================================================== -->
+      <!-- DESIRE 4 -->
+      <!-- ====================================================== -->
+
+      <article
+        class="card"
+        tabindex="0"
+      >
+        <div class="card-inner">
+
+          <section class="card-face card-front">
+
+            <div class="number">
+              #04
+            </div>
+
+            <div class="card-type">
+              Desire
+            </div>
+
+            <div class="difficulty">
+              Complex
+            </div>
+
+            <div class="flavor-container">
+              <p class="flavor">
+                Our scars make us know
+                that our past was real
+              </p>
+            </div>
+
+            <div class="motif">
+              ✦ ❦ ✦
+            </div>
+
+          </section>
+
+
+          <section class="card-face card-back">
+
+            <div class="back-label">
+              Desire #04
+            </div>
+
+            <h2 class="desire-title">
+              Take revenge on your rival for
+              stealing what you love.
+            </h2>
+
+            <div class="back-rule"></div>
+
+            <div class="card-content">
+
+              <div class="section">
+                <h3>Description</h3>
+
+                <p>
+                  There’s but one thing you’ve loved in this
+                  world. For a brief and shining moment, you
+                  thought it would be yours. Until your enemy
+                  intervened, and your chance at it withered
+                  like a rose in the winter time. You’ve been
+                  patiently waiting for your moment of revenge.
+                  Now, it’s finally here, and you couldn’t be
+                  more ready.
+                </p>
+              </div>
+
+              <div class="section">
+                <h3>Instructions</h3>
+
+                <p>
+                  Tell the group you need a rival. With whoever
+                  accepts the role, establish what they took from
+                  you.
+                </p>
+              </div>
+
+            </div>
+
+          </section>
+
+        </div>
+      </article>
+
+
+      <!-- ====================================================== -->
+      <!-- DESIRE 5 -->
+      <!-- ====================================================== -->
+
+      <article
+        class="card"
+        tabindex="0"
+      >
+        <div class="card-inner">
+
+          <section class="card-face card-front">
+
+            <div class="number">
+              #05
+            </div>
+
+            <div class="card-type">
+              Desire
+            </div>
+
+            <div class="difficulty">
+              Basic
+            </div>
+
+            <div class="flavor-container">
+              <p class="flavor">
+                A large income is the best
+                recipe for happiness
+                I ever heard of
+              </p>
+            </div>
+
+            <div class="motif">
+              ⚜ ❦ ⚜
+            </div>
+
+          </section>
+
+
+          <section class="card-face card-back">
+
+            <div class="back-label">
+              Desire #05
+            </div>
+
+            <h2 class="desire-title">
+              Come into substantial wealth, while ensuring
+              your reputation stays absolutely impeccable.
+            </h2>
+
+            <div class="back-rule"></div>
+
+            <div class="card-content">
+
+              <div class="section">
+                <h3>Description</h3>
+
+                <p>
+                  You’ve always had a taste for luxury—be it
+                  grand balls, expensive clothing, or the race
+                  track. Now your debts are severe, and the
+                  time to pay is approaching. You need money
+                  fast. You can’t let anyone know your true
+                  situation however, as your good opinion and
+                  the help you receive from others would both
+                  be lost. You have to find a way to fix this
+                  without a stain on your name.
+                </p>
+              </div>
+
+            </div>
+
+          </section>
+
+        </div>
+      </article>
+
+
+      <!-- ====================================================== -->
+      <!-- DESIRE 7 -->
+      <!-- ====================================================== -->
+
+      <article
+        class="card"
+        tabindex="0"
+      >
+        <div class="card-inner">
+
+          <section class="card-face card-front">
+
+            <div class="number">
+              #06
+            </div>
+
+            <div class="card-type">
+              Desire
+            </div>
+
+            <div class="difficulty">
+              Basic
+            </div>
+
+            <div class="flavor-container">
+              <p class="flavor">
+                There are people, who the more
+                you do for them, the less they
+                will do for themselves
+              </p>
+            </div>
+
+            <div class="motif">
+              ❧ ⚓ ❧
+            </div>
+
+          </section>
+
+
+          <section class="card-face card-back">
+
+            <div class="back-label">
+              Desire #06
+            </div>
+
+            <h2 class="desire-title">
+              Bring about a budding romance between people of your
+              choosing.
+            </h2>
+
+            <div class="back-rule"></div>
+
+            <div class="card-content">
+
+              <div class="section">
+                <h3>Description</h3>
+
+                <p>
+                  Love is a beautiful and tender thing, and an
+                  advantageous courtship is a financial and
+                  practical triumph. Of course, you see neither
+                  of these things in your immediate future,
+                  but that doesn’t mean you cannot involve
+                  yourself in their delights. There are so many
+                  people in your circles eminently suitable for
+                  each other. It is your pleasure—no, your
+                  duty—to help them along.
+                </p>
+              </div>
+
+              <div class="section">
+                <h3>Instructions</h3>
+
+                <p>
+                  Choose two potential couples and share them with
+                  the Facilitator. Your desire is to see one or
+                  both happily in love.
+                </p>
+              </div>
+
+            </div>
+
+          </section>
+
+        </div>
+      </article>
+
+
+      <!-- ====================================================== -->
+      <!-- DESIRE 8 -->
+      <!-- ====================================================== -->
+
+      <article
+        class="card"
+        tabindex="0"
+      >
+        <div class="card-inner">
+
+          <section class="card-face card-front">
+
+            <div class="number">
+              #07
+            </div>
+
+            <div class="card-type">
+              Desire
+            </div>
+
+            <div class="difficulty">
+              Complex
+            </div>
+
+            <div class="flavor-container">
+              <p class="flavor">
+                What is right to be done
+                cannot be done too soon
+              </p>
+            </div>
+
+            <div class="motif">
+              ☾ ⚓ ☽
+            </div>
+
+          </section>
+
+
+          <section class="card-face card-back">
+
+            <div class="back-label">
+              Desire #07
+            </div>
+
+            <h2 class="desire-title">
+              Restore your family name, and
+              resume your place in society.
+            </h2>
+
+            <div class="back-rule"></div>
+
+            <div class="card-content">
+
+              <div class="section">
+                <h3>Description</h3>
+
+                <p>
+                  Some years ago, a huge scandal erupted that
+                  sent ripples of shame and outrage through
+                  local society. Your family were the ones to
+                  blame. They fled from the area, leaving the
+                  ancestral home empty. Now you’re back to
+                  restore your family’s reputation, and resume
+                  your place at the forefront of local society.
+                  The only problem is not everyone here is
+                  happy about it.
+                </p>
+              </div>
+
+              <div class="section">
+                <h3>Public Knowledge</h3>
+
+                <p>
+                  The scandal your family caused.
+                </p>
+              </div>
+
+              <div class="section">
+                <h3>Instructions</h3>
+
+                <p>
+                  Create and spread two negative rumours about your
+                  family and the scandal they caused.
+                </p>
+              </div>
+
+            </div>
+
+          </section>
+
+        </div>
+      </article>
+
+
+      <!-- ====================================================== -->
+      <!-- DESIRE 9 -->
+      <!-- ====================================================== -->
+
+      <article
+        class="card"
+        tabindex="0"
+      >
+        <div class="card-inner">
+
+          <section class="card-face card-front">
+
+            <div class="number">
+              #08
+            </div>
+
+            <div class="card-type">
+              Desire
+            </div>
+
+            <div class="difficulty">
+              Basic
+            </div>
+
+            <div class="flavor-container">
+              <p class="flavor">
+                Marriage is indeed a
+                manoeuvring business
+              </p>
+            </div>
+
+            <div class="motif">
+              ♡ ❦ ♡
+            </div>
+
+          </section>
+
+
+          <section class="card-face card-back">
+
+            <div class="back-label">
+              Desire #08
+            </div>
+
+            <h2 class="desire-title">
+              Bolster your love interest’s reputation,
+              and then win your parent’s permission
+              to marry them.
+            </h2>
+
+            <div class="back-rule"></div>
+
+            <div class="card-content">
+
+              <div class="section">
+                <h3>Description</h3>
+
+                <p>
+                  In an ideal world, one is not dependent on
+                  the permission of one’s parents to pursue
+                  their deepest and most ardent affections.
+                  But sadly this is not an ideal world, and
+                  if you want to wed without losing that sweet
+                  inheritance, you’ll need permission from
+                  mummy and daddy. And of course, pleasing
+                  them means choosing a spouse with a
+                  completely impeccable reputation. In today’s
+                  world of endless gossip, this is no easy task.
+                </p>
+              </div>
+
+              <div class="section">
+                <h3>Instructions</h3>
+
+                <p>
+                  Create a parent NPC and give the Facilitator a
+                  short description. You may use a <a href="https://mosh.codabool.com/" target="_blank">generator</a> to develop further details.
+                </p>
+              </div>
+
+            </div>
+
+          </section>
+
+        </div>
+      </article>
+
+
+      <!-- ====================================================== -->
+      <!-- DESIRE 11 -->
+      <!-- ====================================================== -->
+
+      <article
+        class="card"
+        tabindex="0"
+      >
+        <div class="card-inner">
+
+          <section class="card-face card-front">
+
+            <div class="number">
+              #09
+            </div>
+
+            <div class="card-type">
+              Desire
+            </div>
+
+            <div class="difficulty">
+              Basic
+            </div>
+
+            <div class="flavor-container">
+              <p class="flavor">
+                There are people, who the more
+                you do for them, the less they
+                will do for themselves
+              </p>
+            </div>
+
+            <div class="motif">
+              ❦ ✦ ❦
+            </div>
+
+          </section>
+
+
+          <section class="card-face card-back">
+
+            <div class="back-label">
+              Desire #09
+            </div>
+
+            <h2 class="desire-title">
+              Protect your younger sibling from all ill,
+              and ensure they court the person you choose.
+            </h2>
+
+            <div class="back-rule"></div>
+
+            <div class="card-content">
+
+              <div class="section">
+                <h3>Description</h3>
+
+                <p>
+                  Ever since your parents passed away, the
+                  world has been a cold, harsh place for you
+                  and your younger sibling. Fortunately, your
+                  parents left you, the eldest, with a generous
+                  income. But you have no guide on how to
+                  avoid the immoral and ill-meaning. Your
+                  younger sibling is naive, innocent,
+                  vulnerable. It is therefore your job to
+                  decide who they should marry, and arrange
+                  the match.
+                </p>
+              </div>
+
+              <div class="section">
+                <h3>Instructions</h3>
+
+                <p>
+                  Tell the group you need someone to be your younger,
+                  unmarried sibling. Explain the role as a protective
+                  older sibling; you may keep your heavy-handed views
+                  to yourself.
+                </p>
+              </div>
+
+            </div>
+
+          </section>
+
+        </div>
+      </article>
+
+
+      <!-- ====================================================== -->
+      <!-- DESIRE 14 -->
+      <!-- ====================================================== -->
+
+      <article
+        class="card"
+        tabindex="0"
+      >
+        <div class="card-inner">
+
+          <section class="card-face card-front">
+
+            <div class="number">
+              #10
+            </div>
+
+            <div class="card-type">
+              Desire
+            </div>
+
+            <div class="difficulty">
+              Basic
+            </div>
+
+            <div class="flavor-container">
+              <p class="flavor">
+                Our scars make us know
+                that our past was real
+              </p>
+            </div>
+
+            <div class="motif">
+              ☾ ❦ ☽
+            </div>
+
+          </section>
+
+
+          <section class="card-face card-back">
+
+            <div class="back-label">
+              Desire #10
+            </div>
+
+            <h2 class="desire-title">
+              Turn your enemy’s connections against them.
+            </h2>
+
+            <div class="back-rule"></div>
+
+            <div class="card-content">
+
+              <div class="section">
+                <h3>Description</h3>
+
+                <p>
+                  For years, you have lived in the shadow of
+                  another. You watched as they received the
+                  undeserved benefits of wealth, privilege and
+                  connection, while you were coldly overlooked.
+                  You suffered as the things you prized were
+                  taken from you, and given to them. No longer.
+                  Now is the time to correct the past’s
+                  mistakes. You are ready, willing, and able
+                  to turn the tables so emphatically, that
+                  they can never be turned back.
+                </p>
+              </div>
+
+              <div class="section">
+                <h3>Instructions</h3>
+
+                <p>
+                  Tell the group you need a rival. Work with the
+                  player to define the scars between you. The rival
+                  may be an NPC; if so, send the Facilitator its
+                  details.
+                </p>
+              </div>
+
+            </div>
+
+          </section>
+
+        </div>
+      </article>
+
+
+      <!-- ====================================================== -->
+      <!-- DESIRE 15 -->
+      <!-- ====================================================== -->
+
+      <article
+        class="card"
+        tabindex="0"
+      >
+        <div class="card-inner">
+
+          <section class="card-face card-front">
+
+            <div class="number">
+              #11
+            </div>
+
+            <div class="card-type">
+              Desire
+            </div>
+
+            <div class="difficulty">
+              Complex
+            </div>
+
+            <div class="flavor-container">
+              <p class="flavor">
+                There are people, who the more
+                you do for them, the less they
+                will do for themselves
+              </p>
+            </div>
+
+            <div class="motif">
+              ⚓ ❧ ⚓
+            </div>
+
+          </section>
+
+
+          <section class="card-face card-back">
+
+            <div class="back-label">
+              Desire #11
+            </div>
+
+            <h2 class="desire-title">
+              Save your family from financial ruin
+              so you can break off your engagement.
+            </h2>
+
+            <div class="back-rule"></div>
+
+            <div class="card-content">
+
+              <div class="section">
+                <h3>Description</h3>
+
+                <p>
+                  The irresponsible actions of your spendthrift
+                  family have left you all in dire financial
+                  straits. And you are the one to suffer for
+                  it! Your father refused to sell the family
+                  estate; instead he arranged your engagement
+                  to some insufferable rich person. You must
+                  act before you find yourself married. Sort
+                  out your family’s financial problems—whether
+                  by selling the estate or marrying off a more
+                  willing sibling—then call off the engagement
+                  post-haste.
+                </p>
+              </div>
+
+              <div class="section">
+                <h3>Public Knowledge</h3>
+
+                <p>
+                  You are engaged.
+                </p>
+              </div>
+
+              <div class="section">
+                <h3>Instructions</h3>
+
+                <p>
+                  First see whether another player's desire can
+                  accommodate your fiance. Otherwise, establish an
+                  NPC fiance with the Facilitator.
+                </p>
+              </div>
+
+            </div>
+
+          </section>
+
+        </div>
+      </article>
+
+
+      <!-- ====================================================== -->
+      <!-- DESIRE 16 -->
+      <!-- ====================================================== -->
+
+      <article
+        class="card"
+        tabindex="0"
+      >
+        <div class="card-inner">
+
+          <section class="card-face card-front">
+
+            <div class="number">
+              #12
+            </div>
+
+            <div class="card-type">
+              Desire
+            </div>
+
+            <div class="difficulty">
+              Complex
+            </div>
+
+            <div class="flavor-container">
+              <p class="flavor">
+                Marriage is indeed a
+                manoeuvring business
+              </p>
+            </div>
+
+            <div class="motif">
+              ♡ ☾ ♡
+            </div>
+
+          </section>
+
+
+          <section class="card-face card-back">
+
+            <div class="back-label">
+              Desire #12
+            </div>
+
+            <h2 class="desire-title">
+              Marry your secret fiancé.
+            </h2>
+
+            <div class="back-rule"></div>
+
+            <div class="card-content">
+
+              <div class="section">
+                <h3>Description</h3>
+
+                <p>
+                  Three years ago, you and another were struck
+                  by Cupid’s arrow. You fell desperately in
+                  love, and became secretly engaged. You did
+                  not dare to tell your families as they would
+                  never approve of the match. Now it’s three
+                  years later, and the love your fiance once felt
+                  seems to be rapidly fading. This
+                  cannot be! The wedding must go ahead! Not
+                  only because of your feelings—but also a
+                  much more important reason—your fiancé is
+                  your only chance for position, status and
+                  rank you could never otherwise hope to
+                  achieve.
+                </p>
+              </div>
+
+              <div class="section">
+                <h3>Instructions</h3>
+
+                <p>
+                  Tell the group you need a secret fiance. If that
+                  role does not fit the established desires, create
+                  an NPC with the Facilitator instead.
+                </p>
+              </div>
+
+            </div>
+
+          </section>
+
+        </div>
+      </article>
+
+
+      <!-- ====================================================== -->
+      <!-- DESIRE 17 -->
+      <!-- ====================================================== -->
+
+      <article
+        class="card"
+        tabindex="0"
+      >
+        <div class="card-inner">
+
+          <section class="card-face card-front">
+
+            <div class="number">
+              #13
+            </div>
+
+            <div class="card-type">
+              Desire
+            </div>
+
+            <div class="difficulty">
+              Basic
+            </div>
+
+            <div class="flavor-container">
+              <p class="flavor">
+                Selfishness must always be
+                forgiven you know, because
+                there is no hope of a cure
+              </p>
+            </div>
+
+            <div class="motif">
+              ⚜ ❦ ⚜
+            </div>
+
+          </section>
+
+
+          <section class="card-face card-back">
+
+            <div class="back-label">
+              Desire #13
+            </div>
+
+            <h2 class="desire-title">
+              Best or humiliate your cousin in every matter,
+              and win your uncle’s inheritance.
+            </h2>
+
+            <div class="back-rule"></div>
+
+            <div class="card-content">
+
+              <div class="section">
+                <h3>Description</h3>
+
+                <p>
+                  Your uncle has recently turned his mind to
+                  settling his affairs. As he has no children
+                  of his own, his substantial inheritance can
+                  fall to only one of two parties. Yourself,
+                  or your infuriatingly perfect cousin. This
+                  wealth will elevate you from among the
+                  poorest of your peers to among the richest.
+                  Your cousin may have bested you many times
+                  prior. But from this day forth they shall
+                  never best you hence.
+                </p>
+              </div>
+
+              <div class="section">
+                <h3>Instructions</h3>
+
+                <p>
+                  Create an uncle NPC and give the Facilitator a
+                  short description. You may use a <a href="https://mosh.codabool.com/" target="_blank">generator</a> to develop further details.
+                </p>
+              </div>
+
+            </div>
+
+          </section>
+
+        </div>
+      </article>
+
+
+      <!-- ====================================================== -->
+      <!-- DESIRE 18 -->
+      <!-- ====================================================== -->
+
+      <article
+        class="card"
+        tabindex="0"
+      >
+        <div class="card-inner">
+
+          <section class="card-face card-front">
+
+            <div class="number">
+              #14
+            </div>
+
+            <div class="card-type">
+              Desire
+            </div>
+
+            <div class="difficulty">
+              Basic
+            </div>
+
+            <div class="flavor-container">
+              <p class="flavor">
+                They were as strangers;
+                worse than strangers for
+                they could never become acquainted
+              </p>
+            </div>
+
+            <div class="motif">
+              ☾ ♡ ☽
+            </div>
+
+          </section>
+
+
+          <section class="card-face card-back">
+
+            <div class="back-label">
+              Desire #14
+            </div>
+
+            <h2 class="desire-title">
+              Determine your love’s true feelings,
+              and re-establish your engagement.
+            </h2>
+
+            <div class="back-rule"></div>
+
+            <div class="card-content">
+
+              <div class="section">
+                <h3>Description</h3>
+
+                <p>
+                  Five years ago, you fell deeply in love with
+                  another in what was deemed an unsuitable
+                  match. You became secretly engaged. But your
+                  friends and family convinced you to break
+                  it off—and so you did. It was a decision
+                  you have regretted every day since. Now you
+                  find them once again among your circle of
+                  acquaintance. You must know, do they still
+                  feel the same way you do? And if they do,
+                  would they ever agree to re-establish your
+                  union—this time, for good?
+                </p>
+              </div>
+
+              <div class="section">
+                <h3>Instructions</h3>
+
+                <p>
+                  Tell the group you need someone to be your old
+                  flame. If that role does not fit the established
+                  desires, create an NPC with the Facilitator.
+                </p>
+              </div>
+
+            </div>
+
+          </section>
+
+        </div>
+      </article>
+
+
+      <!-- ====================================================== -->
+      <!-- DESIRE 19 -->
+      <!-- ====================================================== -->
+
+      <article
+        class="card"
+        tabindex="0"
+      >
+        <div class="card-inner">
+
+          <section class="card-face card-front">
+
+            <div class="number">
+              #15
+            </div>
+
+            <div class="card-type">
+              Desire
+            </div>
+
+            <div class="difficulty">
+              Complex
+            </div>
+
+            <div class="flavor-container">
+              <p class="flavor">
+                What is right to be done
+                cannot be done too soon
+              </p>
+            </div>
+
+            <div class="motif">
+              ❧ ♡ ❧
+            </div>
+
+          </section>
+
+
+          <section class="card-face card-back">
+
+            <div class="back-label">
+              Desire #15
+            </div>
+
+            <h2 class="desire-title">
+              Break up the relationship between the
+              object of your affection and their paramour.
+            </h2>
+
+            <div class="back-rule"></div>
+
+            <div class="card-content">
+
+              <div class="section">
+                <h3>Description</h3>
+
+                <p>
+                  The love you feel has burned strongly for
+                  years, and yet you have never acted upon it.
+                  There had been no moment. Your inaction
+                  proved almost fatal—it appears the one you
+                  love has now become enamoured with another.
+                  Well, you can no longer sit idly by and
+                  watch your chance at happiness slip away.
+                  You must divide the pair by any means
+                  possible.
+                </p>
+              </div>
+
+              <div class="section">
+                <h3>Instructions</h3>
+
+                <p>
+                  Tell the group you need an object of affection who
+                  is enamoured with another. If that role does not
+                  fit the established desires, create an NPC with the
+                  Facilitator.
+                </p>
+              </div>
+
+            </div>
+
+          </section>
+
+        </div>
+      </article>
+
+
+      <!-- ====================================================== -->
+      <!-- DESIRE 20 -->
+      <!-- ====================================================== -->
+
+      <article
+        class="card"
+        tabindex="0"
+      >
+        <div class="card-inner">
+
+          <section class="card-face card-front">
+
+            <div class="number">
+              #16
+            </div>
+
+            <div class="card-type">
+              Desire
+            </div>
+
+            <div class="difficulty">
+              Basic
+            </div>
+
+            <div class="flavor-container">
+              <p class="flavor">
+                Marriage is indeed a
+                manoeuvring business
+              </p>
+            </div>
+
+            <div class="motif">
+              ⚓ ♡ ⚓
+            </div>
+
+          </section>
+
+
+          <section class="card-face card-back">
+
+            <div class="back-label">
+              Desire #16
+            </div>
+
+            <h2 class="desire-title">
+              Court someone in such a way as to impress your patron
+              and win their support.
+            </h2>
+
+            <div class="back-rule"></div>
+
+            <div class="card-content">
+
+              <div class="section">
+                <h3>Description</h3>
+
+                <p>
+                  But two years ago now, you would consider
+                  yourself doomed never to live the
+                  distinguished life of the genteel to which
+                  you aspire. Then you met your patron.
+                  For reasons that remain their own, they have
+                  agreed to gift you such support in your
+                  career and art as might elevate your rank.
+                  As a show of devotion they naturally require you to
+                  settle into a relationship with a
+                  person of whom they wholly approve.
+                </p>
+              </div>
+
+              <div class="section">
+                <h3>Instructions</h3>
+
+                <p>
+                  Tell the group you need to court someone to impress
+                  a member of the upper class. If that role does not
+                  fit the established desires, create an NPC with the
+                  Facilitator.
+                </p>
+              </div>
+
+            </div>
+
+          </section>
+
+        </div>
+      </article>
+
+    </section>
+  </main>
+
+
+  <footer>
+    Click a card to reveal its private side.
+  </footer>
+
+  <dialog id="desire-dialog" aria-label="Desire details">
+    <div class="dialog-card"></div>
+  </dialog>
+
+  <script>
+    const dialog = document.querySelector("#desire-dialog");
+    const dialogCard = dialog.querySelector(".dialog-card");
+
+    function openDesire(card) {
+      dialogCard.replaceChildren(card.querySelector(".card-back").cloneNode(true));
+      dialog.showModal();
+    }
+
+    document.querySelectorAll(".card").forEach((card) => {
+      card.addEventListener("click", () => openDesire(card));
+      card.addEventListener("keydown", (event) => {
+        if (event.key === "Enter" || event.key === " ") {
+          event.preventDefault();
+          openDesire(card);
+        }
+      });
+    });
+
+    dialog.addEventListener("click", (event) => {
+      if (event.target === dialog) {
+        dialog.close();
+      }
+    });
+
+    dialog.addEventListener("cancel", (event) => event.preventDefault());
+  </script>
+
+</body>
+</html>

@@ -1,0 +1,139 @@
+@import "tailwindcss";
+
+:root {
+  --tone-black: #050505;
+  --tone-black-soft: #0b0b0b;
+  --tone-mid: #5b5b5b;
+  --tone-mid-soft: #7b7b7b;
+  --tone-white: #f5f5f5;
+}
+
+.app-shell {
+  background-color: var(--tone-black);
+  background-image:
+    linear-gradient(rgb(0 0 0 / 0.92), rgb(0 0 0 / 0.92)),
+    url("/checker.webp");
+  background-size: 100% 100%, 980px 980px;
+  background-repeat: no-repeat, repeat;
+  background-position: center, center;
+}
+
+.quadrant-shell {
+  border: 1px solid rgb(110 110 110 / 0.65);
+  background-color: #0e0e0e;
+}
+
+.result-block {
+  border-color: rgb(135 135 135 / 0.62);
+  background: #000;
+}
+
+.themed-modal-panel {
+  border: 1px solid rgb(255 255 255 / 0.9);
+  background-color: #050505;
+}
+
+.mobile-border {
+  display: none;
+}
+
+.action-btn {
+  position: relative;
+  overflow: hidden;
+  border: 1px solid rgb(140 140 140 / 0.78);
+  background-color: #0a0a0a;
+  padding: 0.8rem 1rem;
+  color: rgb(234 234 234);
+  font-size: 0.8rem;
+  font-weight: 900;
+  cursor: pointer;
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  transition:
+    background 160ms ease,
+    color 160ms ease,
+    transform 120ms ease,
+    border-color 160ms ease;
+}
+
+.action-btn:hover {
+  border-color: rgb(226 226 226 / 0.95);
+  background-color: #121212;
+  color: #fff;
+}
+
+.action-btn:active {
+  transform: translateY(1px);
+}
+
+.action-btn-modal {
+  border: 1px solid rgb(130 130 130 / 0.85);
+  background-color: #0a0a0a;
+  color: rgb(234 234 234);
+  padding: 0.55rem 0.9rem;
+  font-size: 0.72rem;
+  font-weight: 900;
+  cursor: pointer;
+  text-transform: uppercase;
+  letter-spacing: 0.16em;
+  transition: border-color 160ms ease, color 160ms ease, background 160ms ease;
+}
+
+.action-btn-modal:hover {
+  border-color: rgb(235 235 235 / 0.95);
+  color: #fff;
+  background-color: #101010;
+}
+
+.modal-option-btn {
+  border: 1px solid rgb(115 115 115 / 0.72);
+  background: rgb(0 0 0 / 0.72);
+  color: rgb(219 219 219);
+  padding: 0.75rem 1rem;
+  text-align: left;
+  font-size: 0.82rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  transition: border-color 160ms ease, color 160ms ease, background 160ms ease;
+}
+
+.modal-option-btn:hover {
+  border-color: rgb(242 242 242 / 0.95);
+  color: #fff;
+  background: rgb(25 25 25 / 0.9);
+}
+
+.dice-btn {
+  border: 1px solid rgb(142 142 142 / 0.75);
+  background: rgb(255 255 255 / 0.06);
+  color: rgb(232 232 232);
+}
+
+.dice-btn:hover {
+  border-color: rgb(245 245 245 / 0.95);
+  background: rgb(255 255 255 / 0.14);
+  color: #fff;
+}
+
+@media (orientation: portrait) and (max-width: 640px) {
+  .mobile-border {
+    display: block;
+    background-image: url("/border.webp");
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+    background-position: center;
+  }
+}
+
+@media (max-width: 640px) {
+  .action-btn {
+    padding: 0.4rem 0.2rem;
+    font-size: 0.5rem;
+    letter-spacing: 0.2em;
+  }
+}
+
+button {
+  cursor: pointer;
+}

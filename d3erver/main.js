@@ -1,16 +1,15 @@
-import { AutoRouter } from 'itty-router'
 import { foundryClient, foundryServer } from './foundry.js'
 import { forgeManifest, forgeDownload, forgeLatest } from './forge.js'
 import { emailMe } from './other.js'
 
-const router = AutoRouter()
-
-router.get("/", foundryClient)
-	.post("/", foundryServer)
-	.get("/forge", forgeDownload)
-	.get("/latest", forgeLatest)
-	.get("/manifest", forgeManifest)
-	.post("/email", emailMe)
+const routes = {
+	"GET /": foundryClient,
+	"POST /": foundryServer,
+	"GET /forge": forgeDownload,
+	"GET /latest": forgeLatest,
+	"GET /manifest": forgeManifest,
+	"POST /email": emailMe,
+}
 
 
 // for local testing
@@ -28,6 +27,9 @@ async function init(env) {
 export default {
 	async fetch(request, env) {
 		if (!ranInit && env.TEST === "true") await init(env)
-		return router.fetch(request, env)
+		const { pathname } = new URL(request.url)
+		const handler = routes[`${request.method} ${pathname}`]
+		if (!handler) return new Response("not found", { status: 404 })
+		return handler(request, env)
 	}
 }

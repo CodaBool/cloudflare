@@ -1,0 +1,69 @@
+@import "tailwindcss";
+
+
+.mobile-border {
+  display: none;
+}
+
+.action-btn {
+  border: 1px solid rgb(252 211 77 / 0.75);
+  background: transparent;
+  padding: 0.8rem 1rem;
+  color: rgb(252 211 77);
+  font-size: 0.8rem;
+  font-weight: 900;
+  cursor: pointer;
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  transition:
+    background 160ms ease,
+    color 160ms ease,
+    transform 120ms ease,
+    border-color 160ms ease;
+}
+
+.action-btn:hover {
+  border-color: rgb(252 211 77);
+  background: rgb(252 211 77 / 0.12);
+  color: rgb(253 230 138);
+}
+
+.action-btn:active {
+  transform: translateY(1px);
+}
+
+
+@media (orientation: portrait) and (max-width: 640px) {
+  .mobile-border {
+    display: block;
+    background-image: url("/border.webp");
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+    background-position: center;
+  }
+}
+
+@media (max-width: 640px) {
+  .action-btn {
+    padding: 0.4rem 0.2rem 0.4rem 0.2rem;
+    font-size: 0.5rem;
+    letter-spacing: 0.2em;
+  }
+}
+
+.action-btn-modal {
+  border: 1px solid rgb(252 211 77 / 0.75);
+  background: transparent;
+  padding: 0.8rem 1rem;
+  color: rgb(252 211 77);
+  font-size: 0.8rem;
+  font-weight: 900;
+  cursor: pointer;
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  transition:
+    background 160ms ease,
+    color 160ms ease,
+    transform 120ms ease,
+    border-color 160ms ease;
+}

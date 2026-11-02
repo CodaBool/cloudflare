@@ -11,7 +11,6 @@
     "chai": "^6.3.0",
     "chai-http": "^5.2.1",
     "dotenv": "^18.0.9",
-    "itty-router": "^5.0.24",
     "mocha": "^12.0.3",
     "wrangler": "4.156.1"
   }
