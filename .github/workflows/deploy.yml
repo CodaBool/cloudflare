@@ -24,7 +24,7 @@ jobs:
             changed="$all"
           else
             files=$(git diff --name-only "$BEFORE" "$GITHUB_SHA")
-            changed=$(for p in $all; do echo "$files" | grep -q "^$p/" && echo "$p"; done)
+            changed=$(for p in $all; do if echo "$files" | grep -q "^$p/"; then echo "$p"; fi; done)
           fi
           echo "projects=$(echo "$changed" | jq -Rnc '[inputs | select(length > 0)]')" >> "$GITHUB_OUTPUT"
         env:
