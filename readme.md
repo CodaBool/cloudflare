@@ -1,5 +1,3 @@
-# CloudFlare
-## Workers
 ### d3erver
 > a "self-host" solution for Foundry modules
 
@@ -9,17 +7,15 @@
 ### Images
 > hosts images with open cors used for stargazer
 
-# Scripts
-## logs
-> downloads all Worker logs for a specified day
-
-
 # Workers not in this repo
-- itch 3x (a different repo)
-- oubliette (oubliette-cockpit)
-- oubliette readable (oubliette_readable)
-- desire worker (desire_card_selection)
-- mosh cockpit (mosh_cockpit)
-- avatar selector (pngtuber_selection)
-- lh (liminal-horror-cockpit)
-- t3 (rpg_cheatsheet)
+- [itch ttrpg discovery](https://github.com/CodaBool/itch_ttrpg_discovery)
+- [oubliette](https://github.com/CodaBool/oubliette-cockpit)
+- [oubliette readable](https://github.com/CodaBool/oubliette_readable)
+- [desire worker](https://github.com/CodaBool/desire_card_selection)
+- [mosh cockpit](https://github.com/CodaBool/mosh_cockpit)
+- [avatar selector](https://github.com/CodaBool/pngtuber_selection)
+- [lh](https://github.com/CodaBool/Liminal-Horror-Cockpit)
+- [t3](https://github.com/CodaBool/rpg_cheatsheet)
+
+# looking for some other server code
+check the [aws repo](https://github.com/CodaBool/AWS)

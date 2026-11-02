@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# downloads all Worker logs for a specified day
+
+
 # load env file
 source ./.dev.vars
 
