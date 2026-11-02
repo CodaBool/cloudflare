@@ -1,6 +1,6 @@
 # AGENTS.md
 
-Each top-level folder with a `wrangler.toml` is its own Cloudflare Worker, with its own `package.json` and lockfile. There is no root package and no workspace. Run `npm` and `wrangler` from inside the worker's folder. The code is plain ES modules with no build step, no TypeScript and no linter.
+Each folder outside `vault/` with a `wrangler.toml` (top-level ones and the ones nested in `2026/`) is its own Cloudflare Worker, with its own `package.json` and lockfile. There is no root package and no workspace. Run `npm` and `wrangler` from inside the worker's folder. The code is plain ES modules with no build step, no TypeScript and no linter.
 
 ## Active vs. vault
 

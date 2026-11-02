@@ -24,6 +24,8 @@ For each project, print its available upgrades grouped by semver level:
 
 Collect only the **Major** group of each project. Done when every project has a list of major bumps (an empty list counts).
 
+**Stop early** when no project has any bump at all (every project prints "All dependencies match the latest package versions"): run step 5 next. If step 5 also leaves every `uses:` line unchanged, skip to step 7, then end with the report and no commit.
+
 ### 2. Assess the risk of each major bump
 
 Every package gets upgraded to latest; this step maps what the upgrade will break so the migration is planned, not discovered.
