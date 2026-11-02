@@ -11,9 +11,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       # https://github.com/marketplace/actions/checkout
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
       # https://github.com/marketplace/actions/setup-node-js-environment
-      - uses: actions/setup-node@v6
+      - uses: actions/setup-node@v7
       - run: npm ci
         working-directory: d3erver
       - name: test
@@ -31,7 +31,7 @@ jobs:
           FORGE_SECRET: ${{ secrets.FORGE_SECRET }}
         working-directory: d3erver
       # https://github.com/marketplace/actions/deploy-to-cloudflare-workers-with-wrangler
-      - uses: cloudflare/wrangler-action@v3
+      - uses: cloudflare/wrangler-action@v4
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT }}

@@ -1,8 +1,4 @@
-import { AutoRouter } from 'itty-router'
-
-const router = AutoRouter()
-
-router.post('/', async (request, env) => {
+async function send(request, env) {
   const url = new URL(request.url);
   let subject = url.searchParams.get("subject");
   const email = url.searchParams.get("to"); // recipient email
@@ -73,6 +69,19 @@ router.post('/', async (request, env) => {
     return new Response("not found", { status: 404 });
   }
   return new Response("email sent", { status: 200 });
-})
+}
 
-export default { fetch: router.fetch }
+export default {
+  async fetch(request, env) {
+    const { pathname } = new URL(request.url)
+    if (request.method !== "POST" || pathname !== "/") {
+      return new Response("not found", { status: 404 })
+    }
+    try {
+      return await send(request, env)
+    } catch (err) {
+      console.error(err)
+      return new Response("internal error", { status: 500 })
+    }
+  }
+}
