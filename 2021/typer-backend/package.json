@@ -1,0 +1,13 @@
+{
+  "name": "typer-2021",
+  "type": "module",
+  "scripts": {
+    "dev": "wrangler dev",
+    "deploy": "wrangler deploy",
+    "test": "node --test test.js"
+  },
+  "devDependencies": {
+    "socket.io-client": "^4.8.1",
+    "wrangler": "^4.156.1"
+  }
+}

@@ -12,6 +12,10 @@
 - oubliette-readable: readable Oubliette, with an iframe variant for vtt-oubliette
 - reactive-discord-avatar-selector: reactive Discord avatar selector
 
+### 2021
+- slap: threejs multiplayer slap card game
+- typer: type racing game
+
 ### not in this repo
 - [itch ttrpg discovery](https://github.com/CodaBool/itch_ttrpg_discovery)
 - some other cloud resources are in [aws](https://github.com/CodaBool/AWS)

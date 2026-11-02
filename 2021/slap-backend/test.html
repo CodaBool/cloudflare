@@ -1,0 +1,34 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>slap socket check</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.8.1/socket.io.min.js"></script>
+  </head>
+  <body>
+    <!-- open as test.html?host=http://localhost:8787 -->
+    <p>status: <b id="status">connecting</b></p>
+    <p>transport: <b id="transport">-</b></p>
+    <p>room: <b id="room">-</b></p>
+    <pre id="log"></pre>
+    <script>
+      const host = new URLSearchParams(location.search).get("host") || "http://localhost:8787"
+      const $ = id => document.getElementById(id)
+      const log = (...args) => ($("log").textContent += args.map(a => JSON.stringify(a)).join(" ") + "\n")
+      const socket = io(host, { path: "/slap" })
+
+      socket.on("connect", () => {
+        $("status").textContent = "connected"
+        $("transport").textContent = socket.io.engine.transport.name
+        socket.io.engine.on("upgrade", t => ($("transport").textContent = t.name))
+        socket.emit("init", { name: "browser", uid: "browser" })
+      })
+      socket.on("connect_error", err => {
+        $("status").textContent = "error"
+        log("connect_error", err.message)
+      })
+      socket.on("init", room => ($("room").textContent = room))
+      socket.onAny((event, data) => log(event, data))
+    </script>
+  </body>
+</html>

@@ -1,0 +1,11 @@
+name = "slap-2021"
+main = "src/index.js"
+compatibility_date = "2026-11-02"
+
+[[durable_objects.bindings]]
+name = "SLAP"
+class_name = "Slap"
+
+[[migrations]]
+tag = "v1"
+new_sqlite_classes = ["Slap"]
